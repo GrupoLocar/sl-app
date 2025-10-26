@@ -1,0 +1,7 @@
+# Usa LF universalmente
+* text eol=lf
+
+# Mantém binários sem conversão
+*.png binary
+*.jpg binary
+*.zip binary

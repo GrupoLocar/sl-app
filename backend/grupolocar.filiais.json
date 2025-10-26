@@ -1,0 +1,1875 @@
+[{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d03"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085065877",
+  "filial": "ACNIT",
+  "endereco": "Alameda Sao Boaventura,",
+  "complemento": "490",
+  "bairro": "Fonseca",
+  "cidade": "Niteroi",
+  "estado": "RJ",
+  "cep": "24120-191",
+  "responsavel": "Renato Souza",
+  "cargo": "Supervisor",
+  "telefone": "21 96412-3881",
+  "email": "",
+  "observacao": "bairro: Fonseca, cidade: Niteroi",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d04"
+  },
+  "cliente": "Localiza",
+  "distrital": "Janaina Folly",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0536-07",
+  "filial": "ACVRE",
+  "endereco": "Avenida Alm Adalberto De Barros Nunes",
+  "complemento": "180",
+  "bairro": "Niteroi",
+  "cidade": "Volta Redonda",
+  "estado": "RJ",
+  "cep": "27.283-775",
+  "responsavel": "Michel Silva",
+  "cargo": "Supervisor",
+  "telefone": "(00)00000-0000",
+  "email": "e@e.e",
+  "observacao": "Bairro Niteroi Cidade Volta Redonda",
+  "updatedAt": {
+    "$date": "2025-09-06T22:41:30.169Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d05"
+  },
+  "cliente": "Localiza",
+  "distrital": "Simone Medeiros",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1034-77",
+  "filial": "ACUMA",
+  "endereco": "Avenida Aluizio Da Silva Gomes",
+  "complemento": "800",
+  "bairro": "Gloria",
+  "cidade": "Macae",
+  "estado": "RJ",
+  "cep": "27.930-560",
+  "responsavel": "Alexandre Ferreira",
+  "cargo": "Supervisor",
+  "telefone": "(21)99842-3062",
+  "email": "e@e.e",
+  "observacao": "Bairro Gloria Cidade Macae",
+  "updatedAt": {
+    "$date": "2025-09-06T16:54:45.790Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d06"
+  },
+  "cliente": "Localiza",
+  "distrital": "Simone Medeiros",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1245-55",
+  "filial": "ACCFR",
+  "endereco": "Avenida America Central",
+  "complemento": "222",
+  "bairro": "Sao Cristovao",
+  "cidade": "Cabo Frio",
+  "estado": "RJ",
+  "cep": "28.908-500",
+  "responsavel": "Larissa Campos",
+  "cargo": "Supervisor",
+  "telefone": "(21)99461-9335",
+  "email": "e@e.e",
+  "observacao": "Bairro Sao Cristovao Cidade Cabo Frio",
+  "updatedAt": {
+    "$date": "2025-09-06T16:31:10.016Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d07"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085080400",
+  "filial": "VCUPB",
+  "endereco": "Avenida Ayrton Sena 5500,",
+  "complemento": "BL 3",
+  "bairro": "Jacarepagua",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22775-005",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Jacarepagua, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d08"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085062347",
+  "filial": "ACJAR",
+  "endereco": "Avenida Ayrton Senna,",
+  "complemento": "2541",
+  "bairro": "Barra Da Tijuca",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22775-002",
+  "responsavel": "Samara Assis",
+  "cargo": "Supervisor",
+  "telefone": "21 98033-3935",
+  "email": "",
+  "observacao": "bairro: Barra Da Tijuca, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d09"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085069945",
+  "filial": "VCRJB",
+  "endereco": "Avenida Brasil,",
+  "complemento": "8685",
+  "bairro": "Penha",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "21012-350",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Penha, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d0a"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085022710",
+  "filial": "ACDCX",
+  "endereco": "Avenida Brigadeiro Lima e Silva, 281 B, 281",
+  "complemento": "Loja B - Parque Duque",
+  "bairro": "Duque De Caxias",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "25085-131",
+  "responsavel": "Ingrid Bonfim",
+  "cargo": "Supervisor",
+  "telefone": "21 99809-4383",
+  "email": "",
+  "observacao": "bairro: Duque De Caxias, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d0b"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085021900",
+  "filial": "VCDUQ",
+  "endereco": "Avenida Brigadeiro Lima e Silva, 925",
+  "complemento": "Jardim Vinte e Cinco de Agosto",
+  "bairro": "Duque De Caxias",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "25071-180",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Duque De Caxias, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d0c"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085013990",
+  "filial": "VCBAR",
+  "endereco": "Avenida Das Americas,",
+  "complemento": "10650",
+  "bairro": "Barra Da Tijuca",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22640-102",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Barra Da Tijuca, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d0d"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085089032",
+  "filial": "ACCVV",
+  "endereco": "Avenida Das Americas,",
+  "complemento": "1510",
+  "bairro": "Barra Da Tijuca",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22640-100",
+  "responsavel": "Mariana Cabral",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Barra Da Tijuca, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d0e"
+  },
+  "cliente": "Localiza",
+  "distrital": "Viviane",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0978-09",
+  "filial": "ACZBT",
+  "endereco": "Avenida Das Americas",
+  "complemento": "5150",
+  "bairro": "Barra Da Tijuca",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22.640-102",
+  "responsavel": "Thiago Bastos Rosario Oliveira",
+  "cargo": "Supervisor",
+  "telefone": "(00)00000-0000",
+  "email": "e@e.e",
+  "observacao": "Bairro Barra Da Tijuca Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-06T23:50:31.934Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d0f"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085104520",
+  "filial": "ACURE",
+  "endereco": "Avenida Das Americas,",
+  "complemento": "19019",
+  "bairro": "Recreio",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22790-971",
+  "responsavel": "Igor Lari",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Recreio, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d10"
+  },
+  "cliente": "Localiza",
+  "distrital": "Lauro Aguiar",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0402-97",
+  "filial": "ACCBT",
+  "endereco": "Avenida Das Americas 5150",
+  "complemento": "Luc 19",
+  "bairro": "Barra Da Tijuca",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22.640-102",
+  "responsavel": "Samara Assis",
+  "cargo": "Supervisor",
+  "telefone": "(21)98033-3935",
+  "email": "e@e.e",
+  "observacao": "Bairro Barra Da Tijuca Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-06T22:53:52.414Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d11"
+  },
+  "cliente": "Localiza",
+  "distrital": "Lauro Aguiar",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0070-87",
+  "filial": "ACBAR",
+  "endereco": "Avenida Das Americas 679",
+  "complemento": "Loja C",
+  "bairro": "Barra Da Tijuca",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22.631-000",
+  "responsavel": "Mariana Cabral",
+  "cargo": "Supervisor",
+  "telefone": "(00)00000-0000",
+  "email": "e@e.e",
+  "observacao": "Bairro Barra Da Tijuca Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-07T02:35:51.477Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d12"
+  },
+  "cliente": "Localiza",
+  "distrital": "Lauro Aguiar",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0692-79",
+  "filial": "ACRCR",
+  "endereco": "Avenida Das Americas 9650",
+  "complemento": "Anexo Ao Hotel Encore",
+  "bairro": "Barra Da Tijuca",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22.793-081",
+  "responsavel": "Beatriz Alencar",
+  "cargo": "Supervisor",
+  "telefone": "(21)96479-0781",
+  "email": "beatriz.alencar@localiza.com",
+  "observacao": "",
+  "updatedAt": {
+    "$date": "2025-09-04T15:29:59.931Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d13"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085097990",
+  "filial": "ACBEF",
+  "endereco": "Avenida Dr. Carvalhaes,",
+  "complemento": "200",
+  "bairro": "Centro",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "26574-460",
+  "responsavel": "Thayanne Magalhaes",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Centro, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d14"
+  },
+  "cliente": "Localiza",
+  "distrital": "Natalia Mendonca",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1152-11",
+  "filial": "ACTSP",
+  "endereco": "Avenida Feliciano Sodre",
+  "complemento": "22",
+  "bairro": "Varzea",
+  "cidade": "Teresopolis",
+  "estado": "RJ",
+  "cep": "25.963-081",
+  "responsavel": "Caroline Silva",
+  "cargo": "Supervisor",
+  "telefone": "(21)99472-9189",
+  "email": "e@e.e",
+  "observacao": "Bairro Varzea Cidade Teresopolis",
+  "updatedAt": {
+    "$date": "2025-09-06T16:39:57.841Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d15"
+  },
+  "cliente": "Localiza",
+  "distrital": "Simone Medeiros",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1247-17",
+  "filial": "ACBUZ",
+  "endereco": "Avenida Jose Bento Ribeiro Dantas 799",
+  "complemento": "Portal Das Ferraduras",
+  "bairro": "Buzios",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "28.950-000",
+  "responsavel": "Larissa Campos",
+  "cargo": "Supervisor",
+  "telefone": "(22)99743-0528",
+  "email": "e@e.e",
+  "observacao": "Bairro Buzios Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-07T00:29:18.571Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d16"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085029480",
+  "filial": "ACSJR",
+  "endereco": "Avenida Leite De Castro,",
+  "complemento": "737",
+  "bairro": "Fabricas",
+  "cidade": "Sao Joao Del Rei",
+  "estado": "MG",
+  "cep": "36301-182",
+  "responsavel": "Suzana Passarini",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Fabricas, cidade: Sao Joao Del Rei",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d17"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085069430",
+  "filial": "ACCSU",
+  "endereco": "Avenida Marechal Fontenele,",
+  "complemento": "3555",
+  "bairro": "Jardim Sulacap",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "21750-000",
+  "responsavel": "Thylara Pires",
+  "cargo": "Supervisor",
+  "telefone": "21 99818-8289",
+  "email": "",
+  "observacao": "bairro: Jardim Sulacap, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d18"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085088141",
+  "filial": "ACSCZ",
+  "endereco": "Avenida Padre Guilherme Decaminada, 2385 - 2385",
+  "complemento": "Assai Atacadista",
+  "bairro": "Santa Cruz",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "23575-000",
+  "responsavel": "Nathalia Sul",
+  "cargo": "Supervisor",
+  "telefone": "21 96409-1457",
+  "email": "",
+  "observacao": "bairro: Santa Cruz, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d19"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085103981",
+  "filial": "ACUNO",
+  "endereco": "Avenida Pastor Martin Luther King Jr,",
+  "complemento": "126",
+  "bairro": "Del Castilho",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "20765-000",
+  "responsavel": "Claudia Gisele",
+  "cargo": "Supervisor",
+  "telefone": "21 98153-1402",
+  "email": "",
+  "observacao": "bairro: Del Castilho, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d1a"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085077379",
+  "filial": "VCITG",
+  "endereco": "Avenida Prefeito Isoldakson Cruz de Brito",
+  "complemento": "99",
+  "bairro": "Vila Margarida",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "23825-840",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Vila Margarida, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d1b"
+  },
+  "cliente": "Localiza",
+  "distrital": "Natalia Mendonca",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1219-63",
+  "filial": "ACNVF",
+  "endereco": "Avenida Presidente Costa E Silva",
+  "complemento": "843",
+  "bairro": "Centro",
+  "cidade": "Nova Friburgo",
+  "estado": "RJ",
+  "cep": "28.630-000",
+  "responsavel": "Kelly Andrade",
+  "cargo": "Supervisor",
+  "telefone": "(22)99803-4546",
+  "email": "e@e.e",
+  "observacao": "Bairro Centro Cidade Nova Friburgo",
+  "updatedAt": {
+    "$date": "2025-09-07T02:27:19.010Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d1c"
+  },
+  "cliente": "Localiza",
+  "distrital": "Simone Medeiros",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1010-08",
+  "filial": "ACIPR",
+  "endereco": "Avenida Presidente Dutra 1099",
+  "complemento": "Cidade Nova",
+  "bairro": "Itaperuna",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "28.300-000",
+  "responsavel": "Mayara Justino Thomazine",
+  "cargo": "Supervisor",
+  "telefone": "(22)99738-2819",
+  "email": "e@e.e",
+  "observacao": "Bairro Itaperuna Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-06T16:44:04.459Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d1d"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085115564",
+  "filial": "ACSGL",
+  "endereco": "Avenida Presidente Kennedy,",
+  "complemento": "Dentro do Partage Shopping",
+  "bairro": "Centro",
+  "cidade": "Sao Goncalo",
+  "estado": "RJ",
+  "cep": "24445-000",
+  "responsavel": "Pricila Almeida De Oliveira",
+  "cargo": "Supervisor",
+  "telefone": "21 99618-8048",
+  "email": "",
+  "observacao": "bairro: Centro, cidade: Sao Goncalo",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d1e"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085001127",
+  "filial": "ACCOP",
+  "endereco": "Avenida Princesa Isabel,",
+  "complemento": "150",
+  "bairro": "Copacabana",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22011-010",
+  "responsavel": "Thamires Assis",
+  "cargo": "Supervisor",
+  "telefone": "21 99189-1591",
+  "email": "thamires.assis@localiza.com",
+  "observacao": "bairro: Copacabana, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d1f"
+  },
+  "cliente": "Localiza",
+  "distrital": "Simone Medeiros",
+  "razao_social": "Localiza Rent A Car",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0253-01",
+  "filial": "ACMAE",
+  "endereco": "Avenida Rui Barbosa",
+  "complemento": "2100",
+  "bairro": "Alto Dos Cajueiros",
+  "cidade": "Macae",
+  "estado": "RJ",
+  "cep": "27.915-012",
+  "responsavel": "Tatiane Souza",
+  "cargo": "Supervisor",
+  "telefone": "(21)99848-6089",
+  "email": "tatiane.souza@localiza.com",
+  "observacao": "",
+  "updatedAt": {
+    "$date": "2025-09-03T21:20:11.992Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d20"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085125365",
+  "filial": "VCSGL",
+  "endereco": "Avenida Sao Goncalo 100",
+  "complemento": "L3 SL 1",
+  "bairro": "Boa Vista",
+  "cidade": "Sao Goncalo",
+  "estado": "RJ",
+  "cep": "24466-970",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Boa Vista, cidade: Sao Goncalo",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d21"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "00000000000003",
+  "filial": "DDC",
+  "endereco": "Avenida SN 1,",
+  "complemento": "122",
+  "bairro": "Parque Duque",
+  "cidade": "Duque de Caxias",
+  "estado": "RJ",
+  "cep": "25085-378",
+  "responsavel": "Sam Silva",
+  "cargo": "Supervisor",
+  "telefone": "21 99621-7831",
+  "email": "",
+  "observacao": "bairro: Parque Duque, cidade: Duque de Caxias",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d22"
+  },
+  "cliente": "Localiza",
+  "distrital": "D",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1327-36",
+  "filial": "ACCSH",
+  "endereco": "Avenida Vicente De Carvalho",
+  "complemento": "909",
+  "bairro": "Vila Da Penha",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "21.210-000",
+  "responsavel": "Carolina Motta Fogaca",
+  "cargo": "Supervisor",
+  "telefone": "(00)00000-0000",
+  "email": "e@e.e",
+  "observacao": "Bairro Vila Da Penha Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-07T02:39:17.947Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d23"
+  },
+  "cliente": "Localiza",
+  "distrital": "Luciane Rodrigues",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0010-46",
+  "filial": "AAGIB",
+  "endereco": "Avenida Vinte De Janeiro",
+  "complemento": "Sn",
+  "bairro": "Galeao",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "21.941-900",
+  "responsavel": "Tatiana Borges",
+  "cargo": "Supervisor",
+  "telefone": "(21)97220-5919",
+  "email": ".@hotmail.com",
+  "observacao": "",
+  "updatedAt": {
+    "$date": "2025-09-04T12:22:13.927Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d24"
+  },
+  "cliente": "Localiza",
+  "distrital": "Luciane Rodrigues",
+  "razao_social": "Localiza Rent A Car",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0067-81",
+  "filial": "ACGIG",
+  "endereco": "Avenida Vinte De Janeiro",
+  "complemento": "Sn Setor B",
+  "bairro": "Galeao",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "21.941-570",
+  "responsavel": "Guilherme Soares",
+  "cargo": "Supervisor",
+  "telefone": "(21)98470-6990",
+  "email": "e@e.e",
+  "observacao": "Bairro Galeao Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-07T01:19:42.739Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d25"
+  },
+  "cliente": "Localiza",
+  "distrital": "Natalia Mendonca",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0738-96",
+  "filial": "ACIBO",
+  "endereco": "Avenida Vinte E Dois De Maio 4908 4908 Loja",
+  "complemento": "Rio Varzea",
+  "bairro": "Itaborai",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "24.812-082",
+  "responsavel": "Viviane Francisco",
+  "cargo": "Supervisor",
+  "telefone": "(21)99362-6696",
+  "email": "e@e.e",
+  "observacao": "Bairro Itaborai Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-06T22:48:31.792Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d26"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085032782",
+  "filial": "VCVIX",
+  "endereco": "Avenida Vitoria,",
+  "complemento": "1276",
+  "bairro": "Forte Sao Joao",
+  "cidade": "Vitoria",
+  "estado": "ES",
+  "cep": "29017-022",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Forte Sao Joao, cidade: Vitoria",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d27"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085058153",
+  "filial": "VCCGD",
+  "endereco": "Es do Mendanha",
+  "complemento": "4000",
+  "bairro": "Campo Grande",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "23095-841",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Campo Grande, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d28"
+  },
+  "cliente": "Localiza",
+  "distrital": "Thiago Souza",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "00.000.000/0000-02",
+  "filial": "ACERIO",
+  "endereco": "Estr Da Gavea",
+  "complemento": "899",
+  "bairro": "Gavea",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22.610-001",
+  "responsavel": "Sandoval Silva De Sousa",
+  "cargo": "Supervisor",
+  "telefone": "(21)99621-7831",
+  "email": "e@e.e",
+  "observacao": "Bairro Gavea Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-06T23:44:49.274Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d29"
+  },
+  "cliente": "Localiza",
+  "distrital": "Lauro Aguiar",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1194-70",
+  "filial": "ACJPG",
+  "endereco": "Estr De Jacarepagua 06069",
+  "complemento": "Lj Ss105 Ent D",
+  "bairro": "Anil",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22.753-033",
+  "responsavel": "Dayana Cathermol",
+  "cargo": "Supervisor",
+  "telefone": "(21)99349-8093",
+  "email": "e@e.e",
+  "observacao": "Bairro Anil Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-06T20:55:27.364Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d2a"
+  },
+  "cliente": "Localiza",
+  "distrital": "Janaina Folly",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1186-60",
+  "filial": "ACANG",
+  "endereco": "Estr Do Marinas 91",
+  "complemento": "Terreo",
+  "bairro": "Angra Dos Reis",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "23.900-000",
+  "responsavel": "Fernando Cesar",
+  "cargo": "Supervisor",
+  "telefone": "(21)98060-7129",
+  "email": "fernando.cezar@localiza.com",
+  "observacao": "",
+  "updatedAt": {
+    "$date": "2025-09-06T21:49:39.567Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d2b"
+  },
+  "cliente": "Localiza",
+  "distrital": "Janaina Folly",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1044-49",
+  "filial": "ACUWE",
+  "endereco": "Estr Do Mendanha 450",
+  "complemento": "Estacionamento Do Edificio Garagem Andar G6",
+  "bairro": "Campo Grande",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "23.087-283",
+  "responsavel": "Clarisse Memoria",
+  "cargo": "Supervisor",
+  "telefone": "(21)99710-8335",
+  "email": "e@e.e",
+  "observacao": "Bairro Campo Grande Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-06T22:02:26.096Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d2c"
+  },
+  "cliente": "Localiza",
+  "distrital": "Janaina Folly",
+  "razao_social": "Localiza Rent A Car",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1198-02",
+  "filial": "ACCPG",
+  "endereco": "Estr Do Monteiro",
+  "complemento": "1200",
+  "bairro": "Campo Grande",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "23.045-830",
+  "responsavel": "Clarisse Memoria",
+  "cargo": "Supervisor",
+  "telefone": "(21)99710-8335",
+  "email": "e@e.e",
+  "observacao": "Bairro Campo Grande Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-07T02:08:08.804Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d2d"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085112620",
+  "filial": "ACUFM",
+  "endereco": "Estrada Da Gavea, 899",
+  "complemento": "Shopping Fashion Mall",
+  "bairro": "Sao Conrado",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22610-001",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Sao Conrado, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d2e"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085032600",
+  "filial": "VCNIG",
+  "endereco": "Estrada Doutor Plinio Casado 1749",
+  "complemento": "GP AB",
+  "bairro": "Centro",
+  "cidade": "Nova Iguacu",
+  "estado": "RJ",
+  "cep": "26220-410",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Centro, cidade: Nova Iguacu",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d2f"
+  },
+  "cliente": "Localiza",
+  "distrital": "Janaina Folly",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1099-12",
+  "filial": "ACUMD",
+  "endereco": "Estrada Intendente Magalhaes",
+  "complemento": "384",
+  "bairro": "Madureira",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "21.341-332",
+  "responsavel": "Ewerton Gomes Do Nascimento",
+  "cargo": "Supervisor",
+  "telefone": "(21)99107-1255",
+  "email": "e@e.e",
+  "observacao": "Bairro Madureira Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-07T02:16:19.921Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d30"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085019760",
+  "filial": "VCITD",
+  "endereco": "Estrada Intendente Magalhaes,",
+  "complemento": "177",
+  "bairro": "Vila Valqueire",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "21341-332",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Vila Valqueire, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d31"
+  },
+  "cliente": "Localiza",
+  "distrital": "Simone Medeiros",
+  "razao_social": "Localiza Rent A Car",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1283-80",
+  "filial": "ACRDA",
+  "endereco": "Estrada Professor Leandro Faria Sarzedas Sn",
+  "complemento": "Atlantica",
+  "bairro": "Rio Das Ostras",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "28.895-640",
+  "responsavel": "Natan Ferreira",
+  "cargo": "Supervisor",
+  "telefone": "(21)97632-5446",
+  "email": "e@e.e",
+  "observacao": "Bairro Rio Das Ostras Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-07T02:03:56.748Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d34"
+  },
+  "cliente": "Localiza",
+  "distrital": "Natalia Mendonca",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0535-18",
+  "filial": "ACTSR",
+  "endereco": "R Doutor Vasconcelos",
+  "complemento": "82",
+  "bairro": "Centro",
+  "cidade": "Tres Rios",
+  "estado": "RJ",
+  "cep": "25.804-240",
+  "responsavel": "Iuri Rocha",
+  "cargo": "Supervisor",
+  "telefone": "(24)99273-7391",
+  "email": "e@e.e",
+  "observacao": "Bairro Centro Cidade Tres Rios",
+  "updatedAt": {
+    "$date": "2025-09-06T16:47:40.164Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d35"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085124474",
+  "filial": "VCCFR",
+  "endereco": "R General Alfredo Bruno Gomes Martins,",
+  "complemento": "1239",
+  "bairro": "Braga",
+  "cidade": "Cabo Frio",
+  "estado": "RJ",
+  "cep": "28908-145",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Braga, cidade: Cabo Frio",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d36"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085047623",
+  "filial": "ACTIJ",
+  "endereco": "R. Barao de Mesquita,",
+  "complemento": "394",
+  "bairro": "Tijuca",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "20540-003",
+  "responsavel": "Peterson Costa",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Tijuca, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d38"
+  },
+  "cliente": "Localiza",
+  "distrital": "Juliana Block",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1237-45",
+  "filial": "ACSDU",
+  "endereco": "R Jardel Jercolis",
+  "complemento": "Sn",
+  "bairro": "Gloria",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "20.021-150",
+  "responsavel": "Raquel Jardim",
+  "cargo": "Supervisor",
+  "telefone": "(21)97421-3434",
+  "email": "raquel.jardim@localiza.com",
+  "observacao": "",
+  "updatedAt": {
+    "$date": "2025-09-06T16:23:53.487Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d3a"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "00000000000001",
+  "filial": "CD",
+  "endereco": "R. Maria Soares Sendas,",
+  "complemento": "305 - Parque Barreto",
+  "bairro": "Sao Joao De Meriti",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "25575-825",
+  "responsavel": "Sam Silva",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Sao Joao De Meriti, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d3b"
+  },
+  "cliente": "Localiza",
+  "distrital": "Janaina Folly",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0644-71",
+  "filial": "ACVLE",
+  "endereco": "R Nossa Sra Aparecida",
+  "complemento": "1758",
+  "bairro": "Chacrinha",
+  "cidade": "Valenca",
+  "estado": "RJ",
+  "cep": "27.600-000",
+  "responsavel": "Tatiane Barbosa",
+  "cargo": "Supervisor",
+  "telefone": "(24)99975-3600",
+  "email": "tatiane.barbosa@localiza.com",
+  "observacao": "Bairro Chacrinha Cidade Valenca",
+  "updatedAt": {
+    "$date": "2025-09-06T22:56:17.226Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d3c"
+  },
+  "cliente": "Localiza",
+  "distrital": "Janaina Folly",
+  "razao_social": "Localiza Rent A Car",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0537-80",
+  "filial": "ACREZ",
+  "endereco": "R Pintor Nunes De Paula",
+  "complemento": "140",
+  "bairro": "Centro",
+  "cidade": "Resende",
+  "estado": "RJ",
+  "cep": "27.511-350",
+  "responsavel": "Camila Silva",
+  "cargo": "Supervisor",
+  "telefone": "(24)99999-0070",
+  "email": "e@e.e",
+  "observacao": "Bairro Centro Cidade Resende",
+  "updatedAt": {
+    "$date": "2025-09-07T01:54:42.972Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d3d"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085077964",
+  "filial": "ACCDX",
+  "endereco": "Rod. Washington Luiz, 4735",
+  "complemento": "Vila Sao Luis",
+  "bairro": "Duque De Caxias",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "25055-009",
+  "responsavel": "Ingrid Bonfim",
+  "cargo": "Supervisor",
+  "telefone": "21 99809-4383",
+  "email": "",
+  "observacao": "bairro: Duque De Caxias, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d3e"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085122420",
+  "filial": "ACPTR",
+  "endereco": "Rua Doutor Paulo Herve,",
+  "complemento": "1111",
+  "bairro": "Bingen",
+  "cidade": "Petropolis",
+  "estado": "RJ",
+  "cep": "25665-135",
+  "responsavel": "Jessica Fonseca Silva",
+  "cargo": "Supervisor",
+  "telefone": "24 98848-9238",
+  "email": "",
+  "observacao": "bairro: Bingen, cidade: Petropolis",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d3f"
+  },
+  "cliente": "Localiza",
+  "distrital": "Juliana Block",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0992-67",
+  "filial": "ACBTF",
+  "endereco": "Rua General Severiano 97",
+  "complemento": "Casa E Gourmet Dentro Do Shopping Lj 237 B",
+  "bairro": "Botafogo",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22.290-040",
+  "responsavel": "Victor Tardelly",
+  "cargo": "Supervisor",
+  "telefone": "(21)99461-9335",
+  "email": "e@e.e",
+  "observacao": "Bairro Botafogo Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-06T16:58:00.549Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d40"
+  },
+  "cliente": "Localiza",
+  "distrital": "Simone Medeiros",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0252-20",
+  "filial": "ACCGO",
+  "endereco": "Rua Mal Floriano",
+  "complemento": "319",
+  "bairro": "Campos Dos Goytacazes",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "28.010-161",
+  "responsavel": "Alexandre Simoes Leite",
+  "cargo": "Supervisor",
+  "telefone": "(22)99760-3082",
+  "email": "e@e.e",
+  "observacao": "Bairro Campos Dos Goytacazes Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-06T22:32:55.339Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d41"
+  },
+  "cliente": "Localiza",
+  "distrital": "Lauro Aguiar",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0994-29",
+  "filial": "ACGVA",
+  "endereco": "Rua Marques De Sao Vicente 52",
+  "complemento": "Piso 3 7 Andar",
+  "bairro": "Gavea",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22.451-040",
+  "responsavel": "Daniela Assumpcao",
+  "cargo": "Supervisor",
+  "telefone": "(24)98809-5734",
+  "email": "e@e.e",
+  "observacao": "Bairro Gavea Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-07T02:22:58.071Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d42"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085086793",
+  "filial": "VCROS",
+  "endereco": "Rua Niteroi,",
+  "complemento": "s/n",
+  "bairro": "Jardim Bela Vista",
+  "cidade": "Rio Das Ostras",
+  "estado": "RJ",
+  "cep": "28895-544",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Jardim Bela Vista, cidade: Rio Das Ostras",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d43"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085040700",
+  "filial": "ACSGO",
+  "endereco": "Rua Oliveira Botelho, 349",
+  "complemento": "LUC 02",
+  "bairro": "Neves",
+  "cidade": "Sao Goncalo",
+  "estado": "RJ",
+  "cep": "24425-005",
+  "responsavel": "Viviane Francisco",
+  "cargo": "Supervisor",
+  "telefone": "21 99362-6696",
+  "email": "",
+  "observacao": "bairro: Neves, cidade: Sao Goncalo",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d44"
+  },
+  "cliente": "Localiza",
+  "distrital": "Jean Amorim",
+  "razao_social": "Localiza Rent A Car",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0001-55",
+  "filial": "ACPMD",
+  "endereco": "Rua Petronio Castro Souza",
+  "complemento": "95",
+  "bairro": "Barra Da Tijuca",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "22.793-324",
+  "responsavel": "Erick",
+  "cargo": "Supervisor",
+  "telefone": "(31)9531-5756",
+  "email": "e@e.e",
+  "observacao": "",
+  "updatedAt": {
+    "$date": "2025-09-07T01:29:09.938Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d45"
+  },
+  "cliente": "Localiza",
+  "distrital": "Natalia Mendonca",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1266-80",
+  "filial": "ACSPN",
+  "endereco": "Rua Quinze De Novembro",
+  "complemento": "8",
+  "bairro": "Centro",
+  "cidade": "Niteroi",
+  "estado": "RJ",
+  "cep": "24.025-970",
+  "responsavel": "Alefe Silva",
+  "cargo": "Supervisor",
+  "telefone": "(21)98188-5535",
+  "email": "e@e.e",
+  "observacao": "Bairro Centro Cidade Niteroi",
+  "updatedAt": {
+    "$date": "2025-09-07T02:18:23.243Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d46"
+  },
+  "cliente": "Localiza",
+  "distrital": "Luciane Rodrigues",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0998-52",
+  "filial": "ACDEL",
+  "endereco": "Rua Santiago Guerra 345",
+  "complemento": "Dentro Do Estacionamento Da Leroy Merlin",
+  "bairro": "Piedade",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "20.740-050",
+  "responsavel": "Gisele Gomes",
+  "cargo": "Supervisor",
+  "telefone": "(21)96424-9289",
+  "email": "e@e.e",
+  "observacao": "Bairro Piedade Cidade Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-06T16:32:39.961Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d47"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085044608",
+  "filial": "ACMNA",
+  "endereco": "Rua Santo Antonio,",
+  "complemento": "737",
+  "bairro": "Centro",
+  "cidade": "Juiz De Fora",
+  "estado": "MG",
+  "cep": "36015-000",
+  "responsavel": "Vanessa Marotta",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Centro, cidade: Juiz De Fora",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d4a"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085105500",
+  "filial": "ACUCT",
+  "endereco": "Rua Sao Jose,",
+  "complemento": "35",
+  "bairro": "Centro",
+  "cidade": "Rio De Janeiro",
+  "estado": "RJ",
+  "cep": "20010-020",
+  "responsavel": "Jorge Luiz",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Centro, cidade: Rio De Janeiro",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d4b"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16670085022981",
+  "filial": "ACNIG",
+  "endereco": "Saida Rodovia Pres. Dutra,",
+  "complemento": "13",
+  "bairro": "Jardim Tropical",
+  "cidade": "Nova Iguacu",
+  "estado": "RJ",
+  "cep": "26220-180",
+  "responsavel": "Thayanne Magalhaes",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Jardim Tropical, cidade: Nova Iguacu",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68b8ac16e614d5bbff930d4c"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "...",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "00000000000004",
+  "filial": "VCVRE",
+  "endereco": "Via Sergio Braga,",
+  "complemento": "901",
+  "bairro": "Ponte Alta",
+  "cidade": "Volta Redonda",
+  "estado": "RJ",
+  "cep": "27265-601",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Ponte Alta, cidade: Volta Redonda",
+  "updatedAt": {
+    "$date": "2025-09-03T20:55:47.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bade80b27c62965f948eec"
+  },
+  "cliente": "Localiza",
+  "distrital": "Simone Medeiros",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1063-01",
+  "filial": "ACCAG",
+  "endereco": "Rua Francisco Rossi 86b",
+  "complemento": "0269 Q70",
+  "bairro": "Centro",
+  "cidade": "Cataguases",
+  "estado": "MG",
+  "cep": "36.770-048",
+  "responsavel": "Simone Medeiros",
+  "cargo": "Supervisor",
+  "telefone": "(00)00000-0000",
+  "email": "e@e.e",
+  "observacao": "Bairro Centro Cidade Cataguases",
+  "updatedAt": {
+    "$date": "2025-09-06T16:31:59.339Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bade80b27c62965f948eed"
+  },
+  "cliente": "Localiza",
+  "distrital": "Mariani Souza",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1173-46",
+  "filial": "ACJFB",
+  "endereco": "Ld Alexandre Leonel",
+  "complemento": "200",
+  "bairro": "Sao Mateus",
+  "cidade": "Juiz De Fora",
+  "estado": "MG",
+  "cep": "36.033-365",
+  "responsavel": "Mariani Souza",
+  "cargo": "Supervisor",
+  "telefone": "(00)00000-0000",
+  "email": "e@e.e",
+  "observacao": "Bairro Sao Mateus Cidade Juiz De Fora",
+  "updatedAt": {
+    "$date": "2025-09-06T16:34:15.486Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bade80b27c62965f948eee"
+  },
+  "cliente": "Localiza",
+  "distrital": "Mariani Souza",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0532-75",
+  "filial": "ACJFO",
+  "endereco": "Rua Santo Antonio",
+  "complemento": "1",
+  "bairro": "Centro",
+  "cidade": "Juiz De Fora",
+  "estado": "MG",
+  "cep": "36.015-000",
+  "responsavel": "Mariani Souza",
+  "cargo": "Supervisor",
+  "telefone": "(00)00000-0000",
+  "email": "e@e.e",
+  "observacao": "Bairro Centro Cidade Juiz De Fora",
+  "updatedAt": {
+    "$date": "2025-09-06T16:33:26.950Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bade80b27c62965f948eef"
+  },
+  "cliente": "Localiza",
+  "distrital": "Simone Medeiros",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/1011-80",
+  "filial": "ACMUE",
+  "endereco": "Rua Jose Maimo Ribeiro",
+  "complemento": "1384",
+  "bairro": "Joao Xxii",
+  "cidade": "Muriae",
+  "estado": "MG",
+  "cep": "36.883-190",
+  "responsavel": "Simone Medeiros",
+  "cargo": "Supervisor",
+  "telefone": "(00)00000-0000",
+  "email": "e@e.e",
+  "observacao": "Bairro Joao Xxii Cidade Muriae",
+  "updatedAt": {
+    "$date": "2025-09-06T16:42:45.336Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bade80b27c62965f948ef0"
+  },
+  "cliente": "Localiza",
+  "distrital": "Mariani Souza",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0534-37",
+  "filial": "ACRNV",
+  "endereco": "Rv Mg 353 Km",
+  "complemento": "38",
+  "bairro": "Aeroporto",
+  "cidade": "Rio Novo",
+  "estado": "MG",
+  "cep": "36.150-000",
+  "responsavel": "Mariani Souza",
+  "cargo": "Supervisor",
+  "telefone": "(00)00000-0000",
+  "email": "e@e.e",
+  "observacao": "Bairro Aeroporto Cidade Rio Novo",
+  "updatedAt": {
+    "$date": "2025-09-06T16:50:46.112Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bade80b27c62965f948ef1"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0292-18",
+  "filial": "ACBCA",
+  "endereco": "R Governador Bias Fortes 908",
+  "complemento": "Loja 2",
+  "bairro": "Pontilhao Barbacena",
+  "cidade": "Barbacena",
+  "estado": "MG",
+  "cep": "36205-038",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Pontilhao Barbacena, cidade: Barbacena",
+  "updatedAt": {
+    "$date": "2025-09-05T12:57:16.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68bade80b27c62965f948ef2"
+  },
+  "cliente": "Localiza",
+  "distrital": "...",
+  "razao_social": "Localiza Rent A Car Sa",
+  "insc_estadual": "00.000.00-0",
+  "cnpj": "16.670.085/0925-05",
+  "filial": "ACOUP",
+  "endereco": "Rua Padre Rolim",
+  "complemento": "",
+  "bairro": "Sao Cristovao",
+  "cidade": "Ouro Preto",
+  "estado": "MG",
+  "cep": "35400-000",
+  "responsavel": "",
+  "cargo": "Supervisor",
+  "telefone": "",
+  "email": "",
+  "observacao": "bairro: Sao Cristovao, cidade: Ouro Preto",
+  "updatedAt": {
+    "$date": "2025-09-05T12:57:16.000Z"
+  }
+}]

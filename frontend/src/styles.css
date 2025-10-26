@@ -1,0 +1,78 @@
+*{
+  box-sizing:border-box
+}
+body{
+  font-family:system-ui,Arial;
+  padding:0;margin:0;background:#f6f7fb;color:#111
+}
+.container{max-width:1100px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.06);padding:16px;margin-bottom:16px}
+.btn{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;background:#111;color:#fff}
+.btn.secondary{background:#ececec;color:#222}
+.input{width:100%;padding:10px;border-radius:10px;border:1px solid #ddd;margin:6px 0}
+.grid{display:grid;gap:12px}
+.grid.cards{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+.badge{display:inline-block;background:#111;color:#fff;padding:2px 8px;border-radius:999px;margin-left:6px;font-size:12px}
+
+/* TOPO: centraliza logo + título, hambúrguer à direita */
+.topbar{
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center; /* centraliza o grupo brand */
+gap:10px;
+margin-bottom:10px
+}
+.brand{
+display:flex; align-items:center; gap:10px;
+}
+.brand-title{
+margin:0; font-weight:700;
+}
+.logo{height:40px}
+.hamburger{
+position:absolute; right:8px; top:50%; transform:translateY(-50%);
+font-size:24px; cursor:pointer; background:none; border:none
+}
+
+.menu{margin-left:auto}
+.table{width:100%;border-collapse:collapse;table-layout:auto}
+.table th,.table td{border-bottom:1px solid #eee;padding:10px;text-align:left;font-size:14px;vertical-align:middle}
+.hide{display:none}
+
+/* === Cards de estatística === */
+.grid.cards{grid-template-columns:repeat(3,1fr)} /* 3 colunas fixas e iguais */
+.card.stat{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:110px;text-align:center;gap:6px}
+.card.stat .title{font-weight:600;white-space:nowrap} /* não quebrar título */
+.card.stat .stat-number{font-size:28px;font-weight:800;line-height:1}
+
+/* === Inputs com largura por “ch” === */
+.w-7ch{width:12ch} /* Placa (7) - margem de folga p/ bordas/padding */
+.w-8ch{width:12ch} /* SL opcional (até 8 dígitos) */
+.w-26ch{width:30ch} /* "LAVAGEM SIMPLES (Jato)" cabe sem quebrar */
+.field{margin:6px 0}
+.field label{display:block;margin-bottom:4px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+
+/* Select de unidade menor */
+.select-unidade{width:100px;min-width:unset}
+
+/* coluna Foto */
+.foto-col{display:flex;flex-direction:column;gap:6px}
+.foto-line{display:flex;align-items:center;gap:6px}
+.foto-line span{min-width:56px} /* "Antes:" / "Depois:" alinhado */
+.foto-icon{width:14px;height:14px;cursor:pointer}
+.foto-icon:hover{transform:scale(1.1)}
+
+/* Ícones da coluna Ações */
+td.acoes{ /* table-cell padrão */
+padding: 0 10px;
+}
+.acoes-inner{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+}
+.icon-acao{width:21px;height:21px;cursor:pointer;transition:transform .15s ease,filter .15s ease}
+.icon-acao:hover{transform:scale(1.15);filter:brightness(1.1)}

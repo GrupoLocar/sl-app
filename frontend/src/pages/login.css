@@ -1,0 +1,48 @@
+/* login.css — estilos básicos da tela de login */
+.login-container {
+  background-color: #fff;
+  color: #000;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  
+  h3 {
+    text-align: center;
+  }
+  
+  .termos {
+    font-size: 12px;       /* reduz tamanho do texto */
+    color: #555;           /* cor mais suave */
+    text-align: center;    /* centraliza (opcional) */
+    line-height: 1.4;      /* espaçamento melhor */
+    margin-top: 8px;
+  }
+  
+  .termos b {
+    color: #000;           /* deixa as partes em negrito bem visíveis */
+    font-weight: 600;
+  }
+
+  /* Botão principal "Continuar" */
+button.continuar {
+    background-color: #c2fb4a;  /* nova cor */
+    color: #000;                /* texto em preto para bom contraste */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  button.continuar:hover {
+    background-color: #000000;  /* tom ligeiramente mais escuro ao passar o mouse */
+    color: white;
+  }
+  
