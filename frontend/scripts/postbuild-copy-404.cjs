@@ -1,5 +1,4 @@
-// Copia dist/index.html para dist/404.html (SPA fallback)
-// Funciona em Windows, Linux e macOS porque usa Node.js (fs)
+// Copia dist/index.html para dist/404.html (fallback SPA) em qualquer SO
 const fs = require('fs');
 const path = require('path');
 
