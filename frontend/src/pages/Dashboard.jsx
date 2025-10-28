@@ -33,17 +33,25 @@ function hasAdminRole(user) {
 }
 /* ================================================ */
 
-function formatDateTimeBR(d) {
-  if (!d) return "";
-  const dt = new Date(d);
-  const pad = (n) => String(n).padStart(2, "0");
-  const dia = pad(dt.getDate());
-  const mes = pad(dt.getMonth() + 1);
-  const ano = dt.getFullYear();
-  const hh = pad(dt.getHours());
-  const mm = pad(dt.getMinutes());
-  return `${dia}/${mes}/${ano} ${hh}:${mm}`;
+/* ===== ÍCONES: base + fallback automático ===== */
+function resolveIcon(name) {
+  return `${import.meta.env.BASE_URL}icons/${name}.png`;
 }
+function onIconErrorFactory(name) {
+  return (e) => {
+    const tried = e.currentTarget.dataset.tried || "base";
+    if (tried === "base") {
+      e.currentTarget.src = `./icons/${name}.png`;
+      e.currentTarget.dataset.tried = "dot";
+    } else if (tried === "dot") {
+      e.currentTarget.src = `/icons/${name}.png`;
+      e.currentTarget.dataset.tried = "root";
+    } else {
+      e.currentTarget.alt = `${name} (ícone não encontrado)`;
+    }
+  };
+}
+/* ============================================== */
 
 export default function Dashboard() {
   const nav = useNavigate();
@@ -177,7 +185,6 @@ export default function Dashboard() {
     });
     if (!result.isConfirmed) return;
 
-    // Tenta múltiplos formatos de endpoint (o primeiro agora funciona pois o backend tem DELETE /:id)
     const attempts = [
       () => api.delete(`/api/sl/${sl._id}`),
       () => api.delete(`/api/sl/delete/${sl._id}`),
@@ -237,58 +244,41 @@ export default function Dashboard() {
     }
   }
 
-  // === EXPORTAÇÃO XLSX (usada por "Exportar") ===
-  function exportarTabela() {
-    if (!list.length) {
-      Swal.fire("Sem dados", "Não há registros para exportar.", "info");
-      return;
-    }
+  /* ===== EXPORTAÇÃO XLSX ===== */
+  function pad(n) {
+    return n.toString().padStart(2, "0");
+  }
+  function exportar() {
+    // Ordena por Abertura (opened_at) crescente
+    const sorted = [...list].sort((a, b) => new Date(a.opened_at) - new Date(b.opened_at));
 
-    const ordenado = [...list].sort((a, b) => {
-      const da = new Date(a.opened_at || 0).getTime();
-      const db = new Date(b.opened_at || 0).getTime();
-      return da - db;
-    });
-
-    const linhas = ordenado.map((sl) => ({
-      SL: sl.sl_number || "-",
-      P: sl.priority ? "P" : "",
-      Placa: sl.plate || "",
+    // Monta linhas com a ordem: SL, P, Placa, Tipo de Lavagem, Abertura, Status, Finalização
+    const rows = sorted.map((sl) => ({
+      "SL": sl.sl_number || "-",
+      "P": sl.priority ? "P" : "",
+      "Placa": sl.plate || "",
       "Tipo de Lavagem": sl.tipo_lavagem || "",
-      Abertura: sl.opened_at ? formatDateTimeBR(sl.opened_at) : "",
-      Status: sl.status || "",
-      Finalização: sl.closed_at ? formatDateTimeBR(sl.closed_at) : "",
+      "Abertura": sl.opened_at ? new Date(sl.opened_at).toLocaleString("pt-BR") : "",
+      "Status": sl.status || "",
+      "Finalização": sl.closed_at ? new Date(sl.closed_at).toLocaleString("pt-BR") : "",
     }));
 
-    const ws = XLSX.utils.json_to_sheet(linhas, {
-      header: ["SL", "P", "Placa", "Tipo de Lavagem", "Abertura", "Status", "Finalização"],
-    });
-
-    ws["!cols"] = [
-      { wch: 10 }, // SL
-      { wch: 3 },  // P
-      { wch: 10 }, // Placa
-      { wch: 24 }, // Tipo de Lavagem
-      { wch: 19 }, // Abertura
-      { wch: 14 }, // Status
-      { wch: 19 }, // Finalização
-    ];
-
+    // Cria planilha
+    const ws = XLSX.utils.json_to_sheet(rows, { header: ["SL", "P", "Placa", "Tipo de Lavagem", "Abertura", "Status", "Finalização"] });
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Relatório");
+    XLSX.utils.book_append_sheet(wb, ws, "SL");
 
+    // Nome do arquivo: SL_<FILIAL>_<dd-mm-aaaa>.xlsx
     const now = new Date();
-    const pad = (n) => String(n).padStart(2, "0");
-    const nomeArquivo = `SL_${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(
-      now.getDate()
-    )}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}.xlsx`;
+    const dd = pad(now.getDate());
+    const mm = pad(now.getMonth() + 1);
+    const yyyy = now.getFullYear();
+    const filial = filialSel ? String(filialSel).toUpperCase() : "TODAS";
+    const nome = `SL_${filial}_${dd}-${mm}-${yyyy}.xlsx`;
 
-    XLSX.writeFile(wb, nomeArquivo);
+    XLSX.writeFile(wb, nome);
   }
-
-  function exportarRelatorio() {
-    exportarTabela();
-  }
+  /* ============================================== */
 
   const isAdmin = hasAdminRole(user);
 
@@ -309,15 +299,20 @@ export default function Dashboard() {
         </button>
       </div>
 
-      {/* MENU (apenas Sair, conforme últimas alterações) */}
+      {/* MENU */}
       <div id="menu" className="card">
         <b>Menu</b>
-        <div className="grid" style={{ gridTemplateColumns: "1fr" }}>
+        <div className="grid" style={{ gridTemplateColumns: "1fr 1fr" }}>
+          <button className="btn secondary" disabled={!isAdmin}>Cadastro de Filial</button>
+          <button className="btn secondary" onClick={() => setShowHModal(true)} disabled={!isAdmin}>
+            Cadastro de Higienizador
+          </button>
+          <button className="btn secondary" disabled={!isAdmin}>Relatório</button>
           <button className="btn" onClick={logout}>Sair</button>
         </div>
       </div>
 
-      {/* MODAL CADASTRO HIGIENIZADOR (mantido) */}
+      {/* MODAL CADASTRO HIGIENIZADOR */}
       <HigienizadorModal open={showHModal} onClose={() => setShowHModal(false)} onSaved={() => {}} />
 
       {/* INFO */}
@@ -350,41 +345,43 @@ export default function Dashboard() {
       </div>
 
       {/* NOVA SL + EXPORTAR */}
-      <div className="card">
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button className="btn" onClick={() => { setEditandoSL(null); setShowNew(true); }}>
-            Nova SL
-          </button>
-          <button className="btn" type="button" onClick={exportarTabela}>
-            Exportar
-          </button>
-        </div>
+      <div className="card" style={{ display: "flex", gap: 8, alignItems: "center", justifyContent: "flex-start" }}>
+        <button className="btn" onClick={() => { setEditandoSL(null); setShowNew(true); }}>
+          Nova SL
+        </button>
+        <button className="btn" onClick={exportar}>
+          Exportar
+        </button>
+      </div>
 
-        {showNew && (
-          <form onSubmit={createNew} style={{ marginTop: 10 }}>
-            <div className="grid" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
-              <div>
-                <label>SL (opcional)</label>
-                <input
-                  className="input w-8ch"
-                  value={newForm.sl_number}
-                  onChange={(e) =>
-                    setNewForm({ ...newForm, sl_number: e.target.value.replace(/[^0-9]/g, "") })
-                  }
-                  maxLength={8}
-                  disabled={!!editandoSL}
-                  title={editandoSL ? "O número da SL não pode ser alterado" : "Opcional na criação"}
-                />
-                {/* ❗ SL não pode ser alterado */}
-              </div>
-              <div>
-                <label>Prioridade</label><br />
-                <input
-                  type="checkbox"
-                  checked={newForm.priority}
-                  onChange={(e) => setNewForm({ ...newForm, priority: e.target.checked })}
-                />
-              </div>
+      {/* FORM NOVA/EDITAR SL */}
+      {showNew && (
+        <div className="card">
+          <form onSubmit={createNew}>
+            <h3>{editandoSL ? "Editar SL" : "Nova SL"}</h3>
+
+            {/* SL não pode ser editado */}
+            <div className="field">
+              <label>SL (opcional)</label>
+              <input
+                className="input w-8ch"
+                value={newForm.sl_number}
+                onChange={(e) =>
+                  setNewForm({ ...newForm, sl_number: e.target.value.replace(/[^0-9]/g, "") })
+                }
+                maxLength={8}
+                disabled={!!editandoSL}
+                title={editandoSL ? "O número da SL não pode ser alterado" : "Opcional na criação"}
+              />
+            </div>
+
+            <div className="field">
+              <label>Prioridade</label><br />
+              <input
+                type="checkbox"
+                checked={newForm.priority}
+                onChange={(e) => setNewForm({ ...newForm, priority: e.target.checked })}
+              />
             </div>
 
             <div className="field">
@@ -429,8 +426,8 @@ export default function Dashboard() {
               Cancelar
             </button>
           </form>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* TABELA */}
       <div className="card">
@@ -438,7 +435,7 @@ export default function Dashboard() {
           <thead>
             <tr>
               <th>SL</th>
-              <th></th>
+              <th></th> {/* coluna P (flag de prioridade) */}
               <th>Placa</th>
               <th>Tipo de Lavagem</th>
               <th>Abertura</th>
@@ -447,21 +444,23 @@ export default function Dashboard() {
               <th>Ações</th>
             </tr>
           </thead>
-          <tbody>
+        <tbody>
             {list.map((sl) => (
               <tr key={sl._id}>
                 <td>{sl.sl_number || "-"}</td>
                 <td>{sl.priority ? "P" : ""}</td>
                 <td>{sl.plate}</td>
                 <td>{sl.tipo_lavagem}</td>
-                <td>{sl.opened_at ? formatDateTimeBR(sl.opened_at) : "-"}</td>
+                <td>{sl.opened_at ? new Date(sl.opened_at).toLocaleString() : "-"}</td>
                 <td>{sl.status}</td>
-                <td>{sl.closed_at ? formatDateTimeBR(sl.closed_at) : "-"}</td>
+                <td>{sl.closed_at ? new Date(sl.closed_at).toLocaleString() : "-"}</td>
                 <td className="acoes">
                   <div className="acoes-inner">
                     {sl.status === "Aberta" && (
                       <img
-                        src="/icons/play.png"
+                        src={resolveIcon("play")}
+                        data-tried="base"
+                        onError={onIconErrorFactory("play")}
                         alt="Iniciar"
                         className="icon-acao"
                         onClick={() => abrirModalIniciar(sl)}
@@ -469,7 +468,9 @@ export default function Dashboard() {
                     )}
                     {sl.status === "Em andamento" && (
                       <img
-                        src="/icons/check.png"
+                        src={resolveIcon("check")}
+                        data-tried="base"
+                        onError={onIconErrorFactory("check")}
                         alt="Finalizar"
                         className="icon-acao"
                         onClick={() => finish(sl)}
@@ -478,13 +479,17 @@ export default function Dashboard() {
                     {sl.status !== "Finalizada" && (
                       <>
                         <img
-                          src="/icons/pencil.png"
+                          src={resolveIcon("pencil")}
+                          data-tried="base"
+                          onError={onIconErrorFactory("pencil")}
                           alt="Editar"
                           className="icon-acao"
                           onClick={() => abrirModalEditar(sl)}
                         />
                         <img
-                          src="/icons/trash.png"
+                          src={resolveIcon("trash")}
+                          data-tried="base"
+                          onError={onIconErrorFactory("trash")}
                           alt="Excluir"
                           className="icon-acao"
                           onClick={() => abrirModalExcluir(sl)}
@@ -495,7 +500,7 @@ export default function Dashboard() {
                 </td>
               </tr>
             ))}
-          </tbody>
+        </tbody>
         </table>
       </div>
     </div>
