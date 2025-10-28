@@ -19,8 +19,4 @@ MERN (MongoDB, Express, React, Node) demo, pronto para hospedar **frontend no Gi
    - Para GitHub Pages: `npm run build` e publique a pasta `dist/`.
      - Configure `vite.config.js` com `base: '/<repo>/'` se o repositório **não** for `username.github.io`.
 
-Credenciais de teste (seed):
-- Email: ti@grupolocar.com
-- Senha: Admin123
-
 > Campos e coleções SEM acentos/ç.
