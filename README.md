@@ -1,4 +1,4 @@
-# SL App (Solicitação de Lavagem) — Grupo Locar
+# SL-app Lavacar (Solicitação de Lavagem)
 
 MERN (MongoDB, Express, React, Node) demo, pronto para hospedar **frontend no GitHub Pages** e **API em Vercel/Render/Railway**.
 
