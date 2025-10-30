@@ -2,9 +2,8 @@
 import { connectToDB } from '../_lib/db.js';
 import SL from '../_models/SL.js';
 
-export const config = {
-  runtime: 'nodejs18.x',
-};
+// OPCIONAL: pode remover completamente este bloco
+export const config = { runtime: 'nodejs' };
 
 export default async function handler(req, res) {
   const { id } = req.query;

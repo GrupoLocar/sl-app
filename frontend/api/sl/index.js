@@ -2,24 +2,22 @@
 import { connectToDB } from '../_lib/db.js';
 import SL from '../_models/SL.js';
 
-// Vercel Functions (Edge não; Node.js runtime)
-export const config = {
-  runtime: 'nodejs18.x',
-};
+// OPCIONAL: pode remover completamente este bloco, o default é Node.js
+export const config = { runtime: 'nodejs' };
 
 export default async function handler(req, res) {
   try {
     await connectToDB();
 
     if (req.method === 'GET') {
-      // filtros básicos (opcional): ?filial=AAVIX&status=ABERTA
+      // filtros básicos (opcionais): ?filial=AAVIX&status=ABERTA&prioridade=true
       const { filial, status, prioridade } = req.query;
       const q = {};
       if (filial) q.filial = filial;
       if (status) q.status = status;
       if (typeof prioridade !== 'undefined') q.prioridade = prioridade === 'true';
 
-      // Se sua UI pede ordenação por "abertura" crescente:
+      // ordenação por abertura crescente (ajuste se precisar)
       const rows = await SL.find(q).sort({ abertura: 1 }).lean();
       return res.status(200).json(rows);
     }
@@ -38,7 +36,6 @@ export default async function handler(req, res) {
   }
 }
 
-// Helper para quando req.body vier vazio em serverless
 async function readJson(req) {
   return new Promise((resolve, reject) => {
     let data = '';
