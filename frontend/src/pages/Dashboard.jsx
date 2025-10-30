@@ -65,10 +65,15 @@ function endOfDay(d) {
   x.setHours(23, 59, 59, 999);
   return x;
 }
+// normaliza "dd-mm-aaaa" -> "dd/mm/aaaa"
+function normalizeBR(str) {
+  return (str || "").trim().replace(/-/g, "/");
+}
 // dd/mm/aaaa -> Date (00:00)
 function parseBRDate(str) {
   if (!str) return null;
-  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(str.trim());
+  const s = normalizeBR(str);
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s);
   if (!m) return null;
   const [_, dd, mm, yyyy] = m;
   const dt = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
@@ -81,7 +86,8 @@ function todayBR() {
 }
 // "dd/mm/aaaa" -> "dd-mm-aaaa"
 function brToDash(str) {
-  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(str || "");
+  const s = normalizeBR(str);
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s || "");
   if (!m) return "";
   return `${m[1]}-${m[2]}-${m[3]}`;
 }
@@ -121,7 +127,8 @@ export default function Dashboard() {
     sl_number: "",
     priority: false,
     plate: "",
-    tipo_lavagem: "LAVAGEM SIMPLES (Jato)",
+    tipo_lavagem: "LAVAGEM SIMPLES",
+    observacao: "",
   });
 
   // CONTROLES DE FILTRO
@@ -202,7 +209,7 @@ export default function Dashboard() {
     });
   }, [list, search, dataIni, dataFim]);
 
-  /* ===== Estatísticas pela view ===== */
+  /* ===== Estatísticas pela view (cards seguem tabela) ===== */
   const statsFromView = useMemo(() => {
     const s = { Aberta: 0, "Em andamento": 0, Finalizada: 0 };
     for (const v of view) {
@@ -274,7 +281,8 @@ export default function Dashboard() {
       sl_number: sl.sl_number || "",
       priority: !!sl.priority,
       plate: sl.plate || "",
-      tipo_lavagem: sl.tipo_lavagem || "LAVAGEM SIMPLES (Jato)",
+      tipo_lavagem: sl.tipo_lavagem || "LAVAGEM SIMPLES",
+      observacao: sl.observacao || "",
     });
   }
 
@@ -338,13 +346,24 @@ export default function Dashboard() {
           priority: !!body.priority,
           plate: plateUp,
           tipo_lavagem: body.tipo_lavagem,
+          observacao: body.observacao || "",
         });
         setEditandoSL(null);
       } else {
-        await api.post("/api/sl", { ...body, plate: plateUp });
+        await api.post("/api/sl", {
+          ...body,
+          plate: plateUp,
+          observacao: body.observacao || "",
+        });
       }
       setShowNew(false);
-      setNewForm({ sl_number: "", priority: false, plate: "", tipo_lavagem: "LAVAGEM SIMPLES (Jato)" });
+      setNewForm({
+        sl_number: "",
+        priority: false,
+        plate: "",
+        tipo_lavagem: "LAVAGEM SIMPLES",
+        observacao: "",
+      });
       refresh();
     } catch {
       Swal.fire("Erro", "Erro ao salvar SL.", "error");
@@ -377,7 +396,6 @@ export default function Dashboard() {
     XLSX.utils.book_append_sheet(wb, ws, "SL");
 
     const filial = filialSel ? String(filialSel).toUpperCase() : "TODAS";
-    // datas do filtro no formato dd-mm-aaaa
     const din = brToDash(dataIni);
     const dfi = brToDash(dataFim);
     const nome = `SL_${filial}_${din}_${dfi}.xlsx`;
@@ -387,7 +405,6 @@ export default function Dashboard() {
 
   const isAdmin = hasAdminRole(user);
 
-  function onFiltrar() {}
   function onLimparFiltros() {
     setSearch("");
     const hoje = todayBR();
@@ -399,7 +416,6 @@ export default function Dashboard() {
   const hoverStyle = `
     .btn:hover { background-color:#c2fb4a!important; color:black!important; }
 
-    /* Moldura do celular como background único */
     .phone-frame{
       background-image:url('${import.meta.env.BASE_URL}phone.png');
       background-repeat:no-repeat;
@@ -412,38 +428,45 @@ export default function Dashboard() {
       justify-content:center;
       align-items:flex-start;
     }
-    /* Conteúdo do formulário posicionado dentro da “tela” da moldura */
     .phone-content{
       width:320px;
-      margin-top:15px;
+      margin-top:10px;
       margin-bottom:40px;
-      padding:20px 16px;
+      padding:14px 12px;
       background:transparent;
     }
     .phone-content h3{ text-align:center; margin-top:0; }
 
-    /* Campos do modal com borda sólida */
     .phone-content .input,
-    .phone-content select {
+    .phone-content select,
+    .phone-content textarea {
       border: 1px solid #333 !important;
     }
 
-    /* Checkbox com borda visível */
-    .phone-content input[type="checkbox"]{
-      width:18px; height:18px;
-      border:2px solid #333;
-      outline: 1px solid #333;
-    }
+    .field{ margin-bottom:10px; }
+    .field.inline{ display:flex; align-items:center; gap:10px; }
 
-    /* Linha com label + checkbox lado a lado */
-    .field.inline{
+    /* Linha combinada SL + Prioridade numa mesma row */
+    .row-sl-prio{
       display:flex;
-      align-items:center;
-      gap:10px;
+      gap:12px;
+      align-items:end;
+      flex-wrap:nowrap;
     }
+    .row-sl-prio .col-sl{ flex:1 1 auto; min-width:0; }
+    .row-sl-prio .col-prio{
+      display:flex; align-items:center; gap:8px;
+      white-space:nowrap;
+      margin-bottom: 8px;   /* aproxima da linha do label SL */
+    }
+    .row-sl-prio .prio-box{ width:18px; height:18px; }
 
-    /* Borda sólida nos inputs da barra superior (Buscar, Data inicial e final) */
-    .barra-filtros .input { border: 1px solid #333 !important; }
+    /* Inputs de largura sugestiva */
+    .w-8ch{ width: 8ch; }
+    .w-9ch{ width: 9ch; }
+    .w-12ch{ width: 12ch; }
+    .w-26ch{ width: 26ch; }
+    .mono{ font-family: monospace; }
   `;
 
   // Foco no campo SL quando o modal abrir
@@ -503,7 +526,7 @@ export default function Dashboard() {
         <div className="card stat"><div className="title">Finalizada</div><div className="stat-number">{statsFromView.Finalizada}</div></div>
       </div>
 
-      {/* AÇÕES em linha */}
+      {/* AÇÕES / FILTROS */}
       <div
         className="card barra-filtros"
         style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "nowrap", overflowX: "auto", whiteSpace: "nowrap" }}
@@ -517,7 +540,7 @@ export default function Dashboard() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           maxLength={23}
-          style={{ width: "27ch", fontFamily: "monospace" }}
+          style={{ width: "27ch", fontFamily: "monospace", border: "1px solid #333" }}
           title="Digite a Placa ou SL"
         />
 
@@ -525,62 +548,72 @@ export default function Dashboard() {
           className="input"
           placeholder="dd/mm/aaaa"
           value={dataIni}
-          onChange={(e) => setDataIni(e.target.value)}
+          onChange={(e) => setDataIni(normalizeBR(e.target.value))}
           title="Data inicial (dd/mm/aaaa)"
-          style={{ width: 80 }}
+          style={{ width: 110, border: "1px solid #333" }}
         />
         <span>até</span>
         <input
           className="input"
           placeholder="dd/mm/aaaa"
           value={dataFim}
-          onChange={(e) => setDataFim(e.target.value)}
+          onChange={(e) => setDataFim(normalizeBR(e.target.value))}
           title="Data final (dd/mm/aaaa)"
-          style={{ width: 80 }}
+          style={{ width: 110, border: "1px solid #333" }}
         />
 
-        <button className="btn" onClick={onFiltrar}>Filtrar</button>
-        <button className="btn" onClick={onLimparFiltros}>Limpar Filtros</button>
+        <button className="btn" onClick={() => { /* filtro é aplicado em tempo real pela 'view' */ }}>
+          Filtrar
+        </button>
+        <button className="btn" onClick={onLimparFiltros}>
+          Limpar Filtros
+        </button>
       </div>
 
-      {/* MODAL NOVA/EDITAR SL (moldura única com background) */}
+      {/* MODAL NOVA/EDITAR SL (moldura) */}
       {showNew && (
         <div className="card phone-frame">
           <div className="phone-content">
             <form onSubmit={createNew}>
               <h3>{editandoSL ? "Editar SL" : "Nova SL"}</h3>
 
-              <div className="field">
-                <label htmlFor="slNumber">SL (opcional)</label>
-                <input
-                  id="slNumber"
-                  ref={slInputRef}
-                  className="input w-8ch"
-                  value={newForm.sl_number}
-                  onChange={(e) =>
-                    setNewForm({ ...newForm, sl_number: e.target.value.replace(/[^0-9]/g, "") })
-                  }
-                  maxLength={8}
-                  disabled={!!editandoSL}
-                  title={editandoSL ? "O número da SL não pode ser alterado" : "Opcional na criação"}
-                />
+              {/* Linha combinada: SL (opcional) + Prioridade (checkbox ao lado) */}
+              <div className="row-sl-prio">
+                <div className="col-sl">
+                  <div className="field">
+                    <label htmlFor="slNumber">SL (opcional)</label>
+                    <input
+                      id="slNumber"
+                      ref={slInputRef}
+                      className="input w-12ch"
+                      value={newForm.sl_number}
+                      onChange={(e) =>
+                        setNewForm({ ...newForm, sl_number: e.target.value.replace(/[^0-9]/g, "") })
+                      }
+                      maxLength={8}
+                      disabled={!!editandoSL}
+                      title={editandoSL ? "O número da SL não pode ser alterado" : "Opcional na criação"}
+                    />
+                  </div>
+                </div>
+                <div className="col-prio">
+                  <label htmlFor="priority">Prioridade</label>
+                  <input
+                    id="priority"
+                    type="checkbox"
+                    className="prio-box"
+                    checked={newForm.priority}
+                    onChange={(e) => setNewForm({ ...newForm, priority: e.target.checked })}
+                    aria-label="Prioridade"
+                  />
+                </div>
               </div>
 
-              <div className="field inline">
-                <label htmlFor="priority">Prioridade</label>
-                <input
-                  id="priority"
-                  type="checkbox"
-                  checked={newForm.priority}
-                  onChange={(e) => setNewForm({ ...newForm, priority: e.target.checked })}
-                  aria-label="Prioridade"
-                />
-              </div>
-
+              {/* Placa */}
               <div className="field">
                 <label>Placa</label>
                 <input
-                  className="input w-7ch"
+                  className="input w-9ch"
                   value={newForm.plate}
                   onChange={(e) =>
                     setNewForm({
@@ -592,6 +625,7 @@ export default function Dashboard() {
                 />
               </div>
 
+              {/* Tipo de Lavagem */}
               <div className="field">
                 <label>Tipo de Lavagem</label>
                 <select
@@ -599,12 +633,26 @@ export default function Dashboard() {
                   value={newForm.tipo_lavagem}
                   onChange={(e) => setNewForm({ ...newForm, tipo_lavagem: e.target.value })}
                 >
-                  <option>LAVAGEM SIMPLES (Jato)</option>
                   <option>LAVAGEM SIMPLES</option>
                   <option>LAVAGEM ESPECIAL</option>
                 </select>
               </div>
 
+              {/* Observacao */}
+              <div className="field">
+                <label>Observacao</label>
+                <textarea
+                  className="input"
+                  rows={3}
+                  maxLength={300}
+                  value={newForm.observacao}
+                  onChange={(e) => setNewForm({ ...newForm, observacao: e.target.value })}
+                  placeholder="Digite observacoes (opcional)"
+                  style={{ width: "100%", resize: "vertical" }}
+                />
+              </div>
+
+              {/* Data e Hora de Abertura */}
               <div className="field">
                 <label>Data e Hora de Abertura:</label>
                 <div className="mono">{new Date().toLocaleString("pt-BR")}</div>
@@ -631,7 +679,7 @@ export default function Dashboard() {
               <th>Abertura</th>
               <th>Status</th>
               <th>Finalização</th>
-              <th>TL</th> {/* Tempo de Lavagem */}
+              <th>TL</th>
               <th>Ações</th>
             </tr>
           </thead>

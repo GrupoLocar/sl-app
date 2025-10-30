@@ -79,6 +79,12 @@ function todayBR() {
   const now = new Date();
   return `${pad2(now.getDate())}/${pad2(now.getMonth() + 1)}/${now.getFullYear()}`;
 }
+// "dd/mm/aaaa" -> "dd-mm-aaaa"
+function brToDash(str) {
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(str || "");
+  if (!m) return "";
+  return `${m[1]}-${m[2]}-${m[3]}`;
+}
 
 /* ===== Tempo de Lavagem (TL) ===== */
 function formatTL(ms) {
@@ -347,7 +353,12 @@ export default function Dashboard() {
 
   /* ===== EXPORTAÇÃO XLSX (view atual) ===== */
   function exportar() {
-    const sorted = [...view].sort((a, b) => new Date(a.opened_at) - new Date(b.opened_at));
+    // Ordena por Abertura crescente
+    const sorted = [...view].sort(
+      (a, b) => new Date(a.opened_at || 0) - new Date(b.opened_at || 0)
+    );
+
+    // Monta linhas na ordem exigida
     const rows = sorted.map((sl) => ({
       SL: sl.sl_number || "-",
       P: sl.priority ? "P" : "",
@@ -356,24 +367,27 @@ export default function Dashboard() {
       Abertura: sl.opened_at ? new Date(sl.opened_at).toLocaleString("pt-BR") : "",
       Status: sl.status || "",
       Finalização: sl.closed_at ? new Date(sl.closed_at).toLocaleString("pt-BR") : "",
+      TL: calcTL(sl.opened_at, sl.closed_at),
     }));
+
     const ws = XLSX.utils.json_to_sheet(rows, {
-      header: ["SL", "P", "Placa", "Tipo de Lavagem", "Abertura", "Status", "Finalização"],
+      header: ["SL", "P", "Placa", "Tipo de Lavagem", "Abertura", "Status", "Finalização", "TL"],
     });
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "SL");
-    const now = new Date();
-    const dd = pad2(now.getDate());
-    const mm = pad2(now.getMonth() + 1);
-    const yyyy = now.getFullYear();
+
     const filial = filialSel ? String(filialSel).toUpperCase() : "TODAS";
-    const nome = `SL_${filial}_${dd}-${mm}-${yyyy}.xlsx`;
+    // datas do filtro no formato dd-mm-aaaa
+    const din = brToDash(dataIni);
+    const dfi = brToDash(dataFim);
+    const nome = `SL_${filial}_${din}_${dfi}.xlsx`;
+
     XLSX.writeFile(wb, nome);
   }
 
   const isAdmin = hasAdminRole(user);
 
-  function onFiltrar() { }
+  function onFiltrar() {}
   function onLimparFiltros() {
     setSearch("");
     const hoje = todayBR();
@@ -401,7 +415,7 @@ export default function Dashboard() {
     /* Conteúdo do formulário posicionado dentro da “tela” da moldura */
     .phone-content{
       width:320px;
-      margin-top:15px;     /* ↓ subimos ~2 linhas em relação ao 90px anterior */
+      margin-top:15px;
       margin-bottom:40px;
       padding:20px 16px;
       background:transparent;
@@ -467,7 +481,7 @@ export default function Dashboard() {
       </div>
 
       {/* MODAL CADASTRO HIGIENIZADOR */}
-      <HigienizadorModal open={showHModal} onClose={() => setShowHModal(false)} onSaved={() => { }} />
+      <HigienizadorModal open={showHModal} onClose={() => setShowHModal(false)} onSaved={() => {}} />
 
       {/* INFO */}
       <div className="card">
@@ -490,7 +504,10 @@ export default function Dashboard() {
       </div>
 
       {/* AÇÕES em linha */}
-      <div className="card" style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "nowrap", overflowX: "auto", whiteSpace: "nowrap" }}>
+      <div
+        className="card barra-filtros"
+        style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "nowrap", overflowX: "auto", whiteSpace: "nowrap" }}
+      >
         <button className="btn" onClick={() => { setEditandoSL(null); setShowNew(true); }}>Nova SL</button>
         <button className="btn" onClick={exportar}>Exportar</button>
 
@@ -504,9 +521,23 @@ export default function Dashboard() {
           title="Digite a Placa ou SL"
         />
 
-        <input className="input" placeholder="dd/mm/aaaa" value={dataIni} onChange={(e) => setDataIni(e.target.value)} title="Data inicial (dd/mm/aaaa)" style={{ width: 80 }} />
+        <input
+          className="input"
+          placeholder="dd/mm/aaaa"
+          value={dataIni}
+          onChange={(e) => setDataIni(e.target.value)}
+          title="Data inicial (dd/mm/aaaa)"
+          style={{ width: 80 }}
+        />
         <span>até</span>
-        <input className="input" placeholder="dd/mm/aaaa" value={dataFim} onChange={(e) => setDataFim(e.target.value)} title="Data final (dd/mm/aaaa)" style={{ width: 80 }} />
+        <input
+          className="input"
+          placeholder="dd/mm/aaaa"
+          value={dataFim}
+          onChange={(e) => setDataFim(e.target.value)}
+          title="Data final (dd/mm/aaaa)"
+          style={{ width: 80 }}
+        />
 
         <button className="btn" onClick={onFiltrar}>Filtrar</button>
         <button className="btn" onClick={onLimparFiltros}>Limpar Filtros</button>
