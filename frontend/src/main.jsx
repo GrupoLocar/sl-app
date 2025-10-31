@@ -1,14 +1,4 @@
-// import React from 'react'
-// import { createRoot } from 'react-dom/client'
-// import { HashRouter } from 'react-router-dom'
-// import App from './App'
-
-// createRoot(document.getElementById('root')).render(
-//   <HashRouter>
-//     <App />
-//   </HashRouter>
-// )
-
+// src/main.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
 import {
@@ -19,6 +9,7 @@ import {
 
 import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import ErrorBoundary from "./ErrorBoundary.jsx";
 
 // Rotas
 const router = createHashRouter([
@@ -30,16 +21,14 @@ const router = createHashRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider
-      router={router}
-      // ✅ Passe os future flags AQUI (no RouterProvider)
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true,
-      }}
-    />
+    <ErrorBoundary>
+      <RouterProvider
+        router={router}
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      />
+    </ErrorBoundary>
   </React.StrictMode>
 );
-
-
-

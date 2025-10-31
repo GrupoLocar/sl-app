@@ -3,16 +3,15 @@ import mongoose from 'mongoose';
 
 const SLSchema = new mongoose.Schema(
   {
-    // Ajuste estes campos conforme seu app:
-    numero: { type: String, required: true },     // ex: "SL-000123"
-    placa: { type: String, required: true },      // ex: "ABC1D23"
-    tipoLavagem: { type: String },                // ex: "Completa", "Simples"
-    abertura: { type: Date, required: true },     // data/hora de abertura
-    finalizacao: { type: Date },                  // data/hora de finalização
-    status: { type: String, default: 'ABERTA' },  // "ABERTA", "EM ANDAMENTO", "FINALIZADA"
-    prioridade: { type: Boolean, default: false },// flag "P" na sua tabela
-    filial: { type: String },                     // unidade selecionada
-    // ...outros campos usados no dashboard
+    sl_number:   { type: String },              // opcional
+    plate:       { type: String, required: true },
+    tipo_lavagem:{ type: String },
+    opened_at:   { type: Date },
+    closed_at:   { type: Date },
+    status:      { type: String, default: 'Aberta' }, // "Aberta" | "Em andamento" | "Finalizada"
+    priority:    { type: Boolean, default: false },
+    observacao:  { type: String, default: '' },
+    filial:      { type: String },              // código da unidade
   },
   { timestamps: true }
 );

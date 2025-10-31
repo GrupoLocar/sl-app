@@ -1,3 +1,4 @@
+// src/pages/Dashboard.jsx
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
@@ -115,7 +116,6 @@ export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [filiais, setFiliais] = useState([]);
   const [filialSel, setFilialSel] = useState("");
-  const [stats, setStats] = useState({ Aberta: 0, "Em andamento": 0, Finalizada: 0 });
   const [list, setList] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -147,28 +147,40 @@ export default function Dashboard() {
       return;
     }
     api.defaults.headers.common.Authorization = "Bearer " + token;
+
     api
-      .get("/api/meta/me")
+      .get("/meta/me")
       .then(({ data }) => setUser(coalesceUserShape(data)))
-      .catch(() => logout());
+      .catch((e) => {
+        console.warn("Falha /meta/me:", e?.response?.status || e?.message);
+        // permanece na UI
+      });
   }, []);
 
   /* ===== Filiais ===== */
   useEffect(() => {
     if (!user) return;
     api
-      .get("/api/filiais/codigos")
+      .get("/filiais/codigos")
       .then(({ data }) => {
         let all = Array.isArray(data) ? data : [];
+        // aplica filtro por filiais do usuário (se houver)
         if (user.filiais?.length) {
           const setFil = new Set(user.filiais.map((f) => String(f).toUpperCase()));
           all = all.filter((f) => setFil.has(String(f).toUpperCase()));
         }
-        setFiliais(all.sort());
+        // ordena A→Z (pt-BR)
+        all = all.sort((a, b) => a.localeCompare(b, 'pt-BR', { sensitivity: 'base' }));
+
+        setFiliais(all);
         setFilialSel((prev) => (all.includes(prev) ? prev : all[0] || ""));
       })
-      .catch(() => {
-        const fallback = Array.isArray(user.filiais) ? user.filiais : [];
+      .catch((err) => {
+        console.warn('Falha /filiais/codigos:', err?.response?.status || err?.message);
+        // fallback: usa filiais do usuário (se houver)
+        const fallback = Array.isArray(user?.filiais) ? [...user.filiais].sort((a, b) =>
+          String(a).localeCompare(String(b), 'pt-BR', { sensitivity: 'base' })
+        ) : [];
         setFiliais(fallback);
         setFilialSel((prev) => (fallback.includes(prev) ? prev : fallback[0] || ""));
       });
@@ -181,8 +193,13 @@ export default function Dashboard() {
   }, [filialSel]);
 
   function refresh() {
-    api.get("/api/sl/stats", { params: { filial: filialSel } }).then(({ data }) => setStats(data));
-    api.get("/api/sl", { params: { filial: filialSel } }).then(({ data }) => setList(Array.isArray(data) ? data : []));
+    api
+      .get("/sl", { params: { filial: filialSel } })
+      .then(({ data }) => setList(Array.isArray(data) ? data : []))
+      .catch((e) => {
+        console.warn("Falha ao carregar /sl:", e?.response?.status || e?.message);
+        setList([]);
+      });
   }
 
   /* ===== View (busca + datas) ===== */
@@ -209,7 +226,6 @@ export default function Dashboard() {
     });
   }, [list, search, dataIni, dataFim]);
 
-  /* ===== Estatísticas pela view (cards seguem tabela) ===== */
   const statsFromView = useMemo(() => {
     const s = { Aberta: 0, "Em andamento": 0, Finalizada: 0 };
     for (const v of view) {
@@ -220,14 +236,12 @@ export default function Dashboard() {
     return s;
   }, [view]);
 
-  /* ===== Menu ===== */
   function toggleMenu() {
     setMenuOpen((v) => !v);
     const el = document.getElementById("menu");
     if (el) el.classList.toggle("hide");
   }
 
-  // === MODAL: Iniciar ===
   async function abrirModalIniciar(sl) {
     if (sl.status !== "Aberta") return;
     const result = await Swal.fire({
@@ -242,14 +256,18 @@ export default function Dashboard() {
     if (!result.isConfirmed) return;
 
     try {
-      await api.patch(`/api/sl/${sl._id}/start`);
+      await api.patch(`/sl/${sl._id}/start`);
       refresh();
     } catch {
-      Swal.fire("Erro", "Não foi possível iniciar a SL.", "error");
+      try {
+        await api.patch(`/sl/${sl._id}`, { status: "Em andamento", opened_at: new Date().toISOString() });
+        refresh();
+      } catch (e) {
+        Swal.fire("Erro", "Não foi possível iniciar a SL.", "error");
+      }
     }
   }
 
-  // === MODAL: Finalizar ===
   async function finish(sl) {
     if (sl.status !== "Em andamento") return;
     const result = await Swal.fire({
@@ -265,14 +283,16 @@ export default function Dashboard() {
     const payload = { status: "Finalizada", closed_at: new Date().toISOString(), filial: filialSel };
 
     try {
-      await api.patch(`/api/sl/${sl._id}/finish`, { force: true, filial: filialSel });
+      await api.patch(`/sl/${sl._id}/finish`, { force: true, filial: filialSel });
       refresh();
     } catch {
-      await api.patch(`/api/sl/${sl._id}`, payload).then(refresh);
+      await api
+        .patch(`/sl/${sl._id}`, payload)
+        .then(refresh)
+        .catch(() => Swal.fire("Erro", "Não foi possível finalizar a SL.", "error"));
     }
   }
 
-  // === MODAL: Editar (reutiliza o modal "Nova SL" com campos preenchidos)
   function abrirModalEditar(sl) {
     if (!sl || sl.status === "Finalizada") return;
     setEditandoSL(sl);
@@ -286,7 +306,6 @@ export default function Dashboard() {
     });
   }
 
-  // === MODAL: Excluir ===
   async function abrirModalExcluir(sl) {
     if (!sl || sl.status === "Finalizada") return;
     const result = await Swal.fire({
@@ -301,11 +320,11 @@ export default function Dashboard() {
     if (!result.isConfirmed) return;
 
     const attempts = [
-      () => api.delete(`/api/sl/${sl._id}`),
-      () => api.delete(`/api/sl/delete/${sl._id}`),
-      () => api.post(`/api/sl/${sl._id}/delete`),
-      () => api.delete(`/api/sl`, { params: { id: sl._id } }),
-      () => api.delete(`/api/sl`, { data: { id: sl._id } }),
+      () => api.delete(`/sl/${sl._id}`),
+      () => api.delete(`/sl/delete/${sl._id}`),
+      () => api.post(`/sl/${sl._id}/delete`),
+      () => api.delete(`/sl`, { params: { id: sl._id } }),
+      () => api.delete(`/sl`, { data: { id: sl._id } }),
     ];
 
     let ok = false;
@@ -334,7 +353,6 @@ export default function Dashboard() {
     }
   }
 
-  // Salvar Nova/Editar SL
   async function createNew(e) {
     e.preventDefault();
     const body = { ...newForm, filial: filialSel };
@@ -342,7 +360,7 @@ export default function Dashboard() {
 
     try {
       if (editandoSL) {
-        await api.patch(`/api/sl/${editandoSL._id}`, {
+        await api.patch(`/sl/${editandoSL._id}`, {
           priority: !!body.priority,
           plate: plateUp,
           tipo_lavagem: body.tipo_lavagem,
@@ -350,7 +368,7 @@ export default function Dashboard() {
         });
         setEditandoSL(null);
       } else {
-        await api.post("/api/sl", {
+        await api.post("/sl", {
           ...body,
           plate: plateUp,
           observacao: body.observacao || "",
@@ -370,14 +388,10 @@ export default function Dashboard() {
     }
   }
 
-  /* ===== EXPORTAÇÃO XLSX (view atual) ===== */
   function exportar() {
-    // Ordena por Abertura crescente
     const sorted = [...view].sort(
       (a, b) => new Date(a.opened_at || 0) - new Date(b.opened_at || 0)
     );
-
-    // Monta linhas na ordem exigida
     const rows = sorted.map((sl) => ({
       SL: sl.sl_number || "-",
       P: sl.priority ? "P" : "",
@@ -403,7 +417,7 @@ export default function Dashboard() {
     XLSX.writeFile(wb, nome);
   }
 
-  const isAdmin = hasAdminRole(user);
+  const stats = statsFromView;
 
   function onLimparFiltros() {
     setSearch("");
@@ -412,7 +426,6 @@ export default function Dashboard() {
     setDataFim(hoje);
   }
 
-  /* ===== CSS inline: hover + moldura do celular ===== */
   const hoverStyle = `
     .btn:hover { background-color:#c2fb4a!important; color:black!important; }
 
@@ -446,7 +459,6 @@ export default function Dashboard() {
     .field{ margin-bottom:10px; }
     .field.inline{ display:flex; align-items:center; gap:10px; }
 
-    /* Linha combinada SL + Prioridade numa mesma row */
     .row-sl-prio{
       display:flex;
       gap:12px;
@@ -457,11 +469,10 @@ export default function Dashboard() {
     .row-sl-prio .col-prio{
       display:flex; align-items:center; gap:8px;
       white-space:nowrap;
-      margin-bottom: 8px;   /* aproxima da linha do label SL */
+      margin-bottom: 8px;
     }
     .row-sl-prio .prio-box{ width:18px; height:18px; }
 
-    /* Inputs de largura sugestiva */
     .w-8ch{ width: 8ch; }
     .w-9ch{ width: 9ch; }
     .w-12ch{ width: 12ch; }
@@ -496,9 +507,9 @@ export default function Dashboard() {
       <div id="menu" className={`card ${menuOpen ? "" : "hide"}`}>
         <b>Menu</b>
         <div className="grid" style={{ gridTemplateColumns: "1fr 1fr" }}>
-          <button className="btn" disabled={!isAdmin}>Cadastro de Filial</button>
-          <button className="btn" onClick={() => setShowHModal(true)} disabled={!isAdmin}>Cadastro de Higienizador</button>
-          <button className="btn" disabled={!isAdmin}>Relatório</button>
+          <button className="btn" disabled={!hasAdminRole(user)}>Cadastro de Filial</button>
+          <button className="btn" onClick={() => setShowHModal(true)} disabled={!hasAdminRole(user)}>Cadastro de Higienizador</button>
+          <button className="btn" disabled={!hasAdminRole(user)}>Relatório</button>
           <button className="btn" onClick={logout}>Sair</button>
         </div>
       </div>
@@ -519,18 +530,15 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* CARDS (pela view) */}
+      {/* CARDS */}
       <div className="grid cards">
-        <div className="card stat"><div className="title">Aberta</div><div className="stat-number">{statsFromView.Aberta}</div></div>
-        <div className="card stat"><div className="title">Em andamento</div><div className="stat-number">{statsFromView["Em andamento"]}</div></div>
-        <div className="card stat"><div className="title">Finalizada</div><div className="stat-number">{statsFromView.Finalizada}</div></div>
+        <div className="card stat"><div className="title">Aberta</div><div className="stat-number">{stats.Aberta}</div></div>
+        <div className="card stat"><div className="title">Em andamento</div><div className="stat-number">{stats["Em andamento"]}</div></div>
+        <div className="card stat"><div className="title">Finalizada</div><div className="stat-number">{stats.Finalizada}</div></div>
       </div>
 
       {/* AÇÕES / FILTROS */}
-      <div
-        className="card barra-filtros"
-        style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "nowrap", overflowX: "auto", whiteSpace: "nowrap" }}
-      >
+      <div className="card barra-filtros" style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "nowrap", overflowX: "auto", whiteSpace: "nowrap" }}>
         <button className="btn" onClick={() => { setEditandoSL(null); setShowNew(true); }}>Nova SL</button>
         <button className="btn" onClick={exportar}>Exportar</button>
 
@@ -562,7 +570,7 @@ export default function Dashboard() {
           style={{ width: 110, border: "1px solid #333" }}
         />
 
-        <button className="btn" onClick={() => { /* filtro é aplicado em tempo real pela 'view' */ }}>
+        <button className="btn" onClick={() => { /* filtragem já acontece pela 'view' */ }}>
           Filtrar
         </button>
         <button className="btn" onClick={onLimparFiltros}>
@@ -577,7 +585,6 @@ export default function Dashboard() {
             <form onSubmit={createNew}>
               <h3>{editandoSL ? "Editar SL" : "Nova SL"}</h3>
 
-              {/* Linha combinada: SL (opcional) + Prioridade (checkbox ao lado) */}
               <div className="row-sl-prio">
                 <div className="col-sl">
                   <div className="field">
@@ -587,9 +594,7 @@ export default function Dashboard() {
                       ref={slInputRef}
                       className="input w-12ch"
                       value={newForm.sl_number}
-                      onChange={(e) =>
-                        setNewForm({ ...newForm, sl_number: e.target.value.replace(/[^0-9]/g, "") })
-                      }
+                      onChange={(e) => setNewForm({ ...newForm, sl_number: e.target.value.replace(/[^0-9]/g, "") })}
                       maxLength={8}
                       disabled={!!editandoSL}
                       title={editandoSL ? "O número da SL não pode ser alterado" : "Opcional na criação"}
@@ -609,23 +614,16 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Placa */}
               <div className="field">
                 <label>Placa</label>
                 <input
-                  className="input w-9ch"
+                  className="input placa"
                   value={newForm.plate}
-                  onChange={(e) =>
-                    setNewForm({
-                      ...newForm,
-                      plate: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""),
-                    })
-                  }
+                  onChange={(e) => setNewForm({ ...newForm, plate: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") })}
                   maxLength={7}
                 />
               </div>
 
-              {/* Tipo de Lavagem */}
               <div className="field">
                 <label>Tipo de Lavagem</label>
                 <select
@@ -638,7 +636,6 @@ export default function Dashboard() {
                 </select>
               </div>
 
-              {/* Observacao */}
               <div className="field">
                 <label>Observacao</label>
                 <textarea
@@ -652,7 +649,6 @@ export default function Dashboard() {
                 />
               </div>
 
-              {/* Data e Hora de Abertura */}
               <div className="field">
                 <label>Data e Hora de Abertura:</label>
                 <div className="mono">{new Date().toLocaleString("pt-BR")}</div>
@@ -673,7 +669,7 @@ export default function Dashboard() {
           <thead>
             <tr>
               <th>SL</th>
-              <th></th> {/* P */}
+              <th></th>
               <th>Placa</th>
               <th>Tipo de Lavagem</th>
               <th>Abertura</th>

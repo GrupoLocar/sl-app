@@ -87,4 +87,4 @@ gap:8px;
 
 /* NOVAS larguras para os inputs (medida em ch) */
 .w-12ch { width: 12ch; }             /* para "SL (opcional)" */
-.w-9ch  { width: 16ch; }              /* para "Placa" */
+.placa  { width: 12ch; } 

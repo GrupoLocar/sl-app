@@ -2,37 +2,48 @@
 import { connectToDB } from '../_lib/db.js';
 import SL from '../_models/SL.js';
 
-// OPCIONAL: pode remover completamente este bloco, o default é Node.js
 export const config = { runtime: 'nodejs' };
 
 export default async function handler(req, res) {
   try {
-    await connectToDB();
+    const conn = await connectToDB();
+
+    if (!conn) {
+      if (req.method === 'GET') return res.status(200).json([]); // fallback
+      return res.status(503).json({ error: 'DB indisponível' });
+    }
 
     if (req.method === 'GET') {
-      // filtros básicos (opcionais): ?filial=AAVIX&status=ABERTA&prioridade=true
       const { filial, status, prioridade } = req.query;
       const q = {};
       if (filial) q.filial = filial;
       if (status) q.status = status;
-      if (typeof prioridade !== 'undefined') q.prioridade = prioridade === 'true';
+      if (typeof prioridade !== 'undefined') q.priority = String(prioridade) === 'true';
 
-      // ordenação por abertura crescente (ajuste se precisar)
-      const rows = await SL.find(q).sort({ abertura: 1 }).lean();
+      const rows = await SL.find(q).sort({ opened_at: 1 }).lean();
       return res.status(200).json(rows);
     }
 
     if (req.method === 'POST') {
-      const body = req.body || (await readJson(req));
-      const created = await SL.create(body);
+      const body = await readJson(req);
+      const doc = {
+        status: body?.status || 'Aberta',
+        opened_at: body?.opened_at ? new Date(body.opened_at) : new Date(),
+        ...body,
+      };
+      const created = await SL.create(doc);
       return res.status(201).json(created);
     }
 
     res.setHeader('Allow', 'GET, POST');
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Internal error', details: err.message });
+    console.error('Erro /api/sl:', err?.message || err);
+    if (req.method === 'GET') {
+      res.setHeader('X-Error', 'sl-list-failed');
+      return res.status(200).json([]); // não “crasha” a UI
+    }
+    return res.status(500).json({ error: 'Internal error', details: err?.message || 'unknown' });
   }
 }
 
