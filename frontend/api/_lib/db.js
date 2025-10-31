@@ -1,4 +1,3 @@
-// frontend/api/_lib/db.js
 import mongoose from 'mongoose';
 
 const { MONGODB_URI } = process.env;
@@ -10,19 +9,17 @@ mongoose.set('strictQuery', true);
 
 export async function connectToDB() {
   if (!MONGODB_URI) {
-    // Não explode fora do handler; o handler decide fallback
-    console.warn('MONGODB_URI não definido nas variáveis de ambiente.');
+    console.warn('MONGODB_URI não definido.');
     return null;
   }
   if (cached.conn) return cached.conn;
-
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
       bufferCommands: false,
       maxPoolSize: 5,
       serverSelectionTimeoutMS: 12000,
       socketTimeoutMS: 45000,
-    }).then((m) => m);
+    }).then(m => m);
   }
   cached.conn = await cached.promise;
   return cached.conn;

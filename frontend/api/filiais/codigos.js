@@ -1,4 +1,3 @@
-// frontend/api/filiais/codigos.js
 import { connectToDB } from '../_lib/db.js';
 import Filial from '../_models/Filial.js';
 
@@ -12,10 +11,7 @@ export default async function handler(req, res) {
 
   try {
     const conn = await connectToDB();
-    if (!conn) {
-      // Sem DB configurado, não derruba a UI
-      return res.status(200).json([]);
-    }
+    if (!conn) return res.status(200).json([]);
 
     const docs = await Filial.find({}, { codigo: 1, nome: 1 }).lean();
     const lista = (docs || [])
@@ -26,7 +22,6 @@ export default async function handler(req, res) {
     return res.status(200).json(lista);
   } catch (err) {
     console.error('GET /api/filiais/codigos erro:', err?.message || err);
-    // retorna [] para não travar tela
     res.setHeader('X-Error', 'filiais-codigos-failed');
     return res.status(200).json([]);
   }

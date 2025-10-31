@@ -1,19 +1,12 @@
-// vite.config.js
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
+// Importante: base = '/' para produção na Vercel em domínio raiz
 export default defineConfig({
-  base: "/sl-app/", // importante p/ rodar em http://localhost:5173/sl-app/ e no GitHub Pages
+  base: '/',
   plugins: [react()],
-  server: {
-    proxy: {
-      // ajuste a porta do seu backend aqui
-      "/api": {
-        target: "http://localhost:8080",
-        changeOrigin: true,
-        // se sua API usa cookies/sessão, ative:
-        // secure: false,
-      },
-    },
+  build: {
+    // opcional: silenciar warning de tamanho (apenas warning)
+    chunkSizeWarningLimit: 1200,
   },
-});
+})

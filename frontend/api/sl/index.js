@@ -1,4 +1,3 @@
-// frontend/api/sl/index.js
 import { connectToDB } from '../_lib/db.js';
 import SL from '../_models/SL.js';
 
@@ -9,7 +8,7 @@ export default async function handler(req, res) {
     const conn = await connectToDB();
 
     if (!conn) {
-      if (req.method === 'GET') return res.status(200).json([]); // fallback
+      if (req.method === 'GET') return res.status(200).json([]);
       return res.status(503).json({ error: 'DB indisponível' });
     }
 
@@ -41,7 +40,7 @@ export default async function handler(req, res) {
     console.error('Erro /api/sl:', err?.message || err);
     if (req.method === 'GET') {
       res.setHeader('X-Error', 'sl-list-failed');
-      return res.status(200).json([]); // não “crasha” a UI
+      return res.status(200).json([]);
     }
     return res.status(500).json({ error: 'Internal error', details: err?.message || 'unknown' });
   }
