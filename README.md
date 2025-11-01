@@ -1,4 +1,4 @@
-# SL-app Lavacar (Solicitação de Lavagem)
+# Lavacar (SL-app)
 
 MERN (MongoDB, Express, React, Node) demo, pronto para hospedar **frontend no GitHub Pages** e **API em Vercel/Render/Railway**.
 
