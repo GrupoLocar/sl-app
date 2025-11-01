@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import HigienizadorModal from "../components/HigienizadorModal";
 import * as XLSX from "xlsx";
 
-/* ===== Helpers ===== */
+/* ===== Helpers para robustez de usuário/role ===== */
 function coalesceUserShape(data) {
   return data?.user || data?.currentUser || data?.me || data || null;
 }
@@ -32,7 +32,7 @@ function hasAdminRole(user) {
   return false;
 }
 
-/* ===== Ícones ===== */
+/* ===== ÍCONES: base + fallback automático ===== */
 function resolveIcon(name) {
   return `${import.meta.env.BASE_URL}icons/${name}.png`;
 }
@@ -52,14 +52,23 @@ function onIconErrorFactory(name) {
 }
 
 /* ===== Datas / Filtros ===== */
-function pad2(n) { return n.toString().padStart(2, "0"); }
-function startOfDay(d) { const x = new Date(d); x.setHours(0,0,0,0); return x; }
-function endOfDay(d) { const x = new Date(d); x.setHours(23,59,59,999); return x; }
-function normalizeBR(str) { return (str || "").trim().replace(/-/g, "/"); }
+function pad2(n) {
+  return n.toString().padStart(2, "0");
+}
+function startOfDay(d) {
+  const x = new Date(d);
+  x.setHours(0, 0, 0, 0);
+  return x;
+}
+function endOfDay(d) {
+  const x = new Date(d);
+  x.setHours(23, 59, 59, 999);
+  return x;
+}
+// dd/mm/aaaa -> Date (00:00)
 function parseBRDate(str) {
   if (!str) return null;
-  const s = normalizeBR(str);
-  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s);
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(str.trim());
   if (!m) return null;
   const [_, dd, mm, yyyy] = m;
   const dt = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
@@ -70,14 +79,14 @@ function todayBR() {
   const now = new Date();
   return `${pad2(now.getDate())}/${pad2(now.getMonth() + 1)}/${now.getFullYear()}`;
 }
+// "dd/mm/aaaa" -> "dd-mm-aaaa"
 function brToDash(str) {
-  const s = normalizeBR(str);
-  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s || "");
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(str || "");
   if (!m) return "";
   return `${m[1]}-${m[2]}-${m[3]}`;
 }
 
-/* ===== TL ===== */
+/* ===== Tempo de Lavagem (TL) ===== */
 function formatTL(ms) {
   if (ms == null || isNaN(ms) || ms < 0) return "-";
   const totalSec = Math.floor(ms / 1000);
@@ -100,10 +109,11 @@ export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [filiais, setFiliais] = useState([]);
   const [filialSel, setFilialSel] = useState("");
+  const [stats, setStats] = useState({ Aberta: 0, "Em andamento": 0, Finalizada: 0 });
   const [list, setList] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // MODAIS / FORM
+  // MODAIS / FORM NOVA SL
   const [showNew, setShowNew] = useState(false);
   const [showHModal, setShowHModal] = useState(false);
   const [editandoSL, setEditandoSL] = useState(null);
@@ -111,18 +121,18 @@ export default function Dashboard() {
     sl_number: "",
     priority: false,
     plate: "",
-    tipo_lavagem: "LAVAGEM SIMPLES",
-    observacao: "",
+    tipo_lavagem: "LAVAGEM SIMPLES (Jato)",
   });
 
-  // FILTRO
+  // CONTROLES DE FILTRO
   const [search, setSearch] = useState("");
   const [dataIni, setDataIni] = useState(todayBR());
   const [dataFim, setDataFim] = useState(todayBR());
 
+  // Ref para focar no campo SL (opcional)
   const slInputRef = useRef(null);
 
-  /* ===== Me ===== */
+  /* ===== Login / Me ===== */
   useEffect(() => {
     const token = getToken();
     if (!token) {
@@ -130,56 +140,45 @@ export default function Dashboard() {
       return;
     }
     api.defaults.headers.common.Authorization = "Bearer " + token;
-
-    api.get("/meta/me")
+    api
+      .get("/api/meta/me")
       .then(({ data }) => setUser(coalesceUserShape(data)))
-      .catch((e) => {
-        console.warn("Falha /meta/me:", e?.response?.status || e?.message);
-        // segue sem user; não impede listar filiais
-        setUser(null);
-      });
+      .catch(() => logout());
   }, []);
 
-  /* ===== Filiais (carrega SEM depender do /meta/me) ===== */
+  /* ===== Filiais ===== */
   useEffect(() => {
-    api.get("/filiais/codigos")
+    if (!user) return;
+    api
+      .get("/api/filiais/codigos")
       .then(({ data }) => {
         let all = Array.isArray(data) ? data : [];
-        // Se vier user com lista própria, filtramos
-        if (user?.filiais?.length) {
+        if (user.filiais?.length) {
           const setFil = new Set(user.filiais.map((f) => String(f).toUpperCase()));
           all = all.filter((f) => setFil.has(String(f).toUpperCase()));
         }
-        // Ordena A→Z
-        all = all.sort((a, b) => a.localeCompare(b, 'pt-BR', { sensitivity: 'base' }));
-
-        setFiliais(all);
+        setFiliais(all.sort());
         setFilialSel((prev) => (all.includes(prev) ? prev : all[0] || ""));
       })
-      .catch((err) => {
-        console.warn('Falha /filiais/codigos:', err?.response?.status || err?.message);
-        // Deixa vazio (ou poderia usar fallback estático se quiser)
-        setFiliais([]);
-        setFilialSel("");
+      .catch(() => {
+        const fallback = Array.isArray(user.filiais) ? user.filiais : [];
+        setFiliais(fallback);
+        setFilialSel((prev) => (fallback.includes(prev) ? prev : fallback[0] || ""));
       });
-  }, [user?.filiais]); // se user mudar, refiltra
+  }, [user]);
 
-  /* ===== SLs ===== */
+  /* ===== Carregar SLs ===== */
   useEffect(() => {
     if (!filialSel) return;
     refresh();
   }, [filialSel]);
 
   function refresh() {
-    api.get("/sl", { params: { filial: filialSel } })
-      .then(({ data }) => setList(Array.isArray(data) ? data : []))
-      .catch((e) => {
-        console.warn("Falha ao carregar /sl:", e?.response?.status || e?.message);
-        setList([]);
-      });
+    api.get("/api/sl/stats", { params: { filial: filialSel } }).then(({ data }) => setStats(data));
+    api.get("/api/sl", { params: { filial: filialSel } }).then(({ data }) => setList(Array.isArray(data) ? data : []));
   }
 
-  /* ===== View ===== */
+  /* ===== View (busca + datas) ===== */
   const view = useMemo(() => {
     const term = (search || "").trim().toUpperCase();
     const di = parseBRDate(dataIni);
@@ -203,6 +202,7 @@ export default function Dashboard() {
     });
   }, [list, search, dataIni, dataFim]);
 
+  /* ===== Estatísticas pela view ===== */
   const statsFromView = useMemo(() => {
     const s = { Aberta: 0, "Em andamento": 0, Finalizada: 0 };
     for (const v of view) {
@@ -213,12 +213,14 @@ export default function Dashboard() {
     return s;
   }, [view]);
 
+  /* ===== Menu ===== */
   function toggleMenu() {
     setMenuOpen((v) => !v);
     const el = document.getElementById("menu");
     if (el) el.classList.toggle("hide");
   }
 
+  // === MODAL: Iniciar ===
   async function abrirModalIniciar(sl) {
     if (sl.status !== "Aberta") return;
     const result = await Swal.fire({
@@ -233,18 +235,14 @@ export default function Dashboard() {
     if (!result.isConfirmed) return;
 
     try {
-      await api.patch(`/sl/${sl._id}/start`);
+      await api.patch(`/api/sl/${sl._id}/start`);
       refresh();
     } catch {
-      try {
-        await api.patch(`/sl/${sl._id}`, { status: "Em andamento", opened_at: new Date().toISOString() });
-        refresh();
-      } catch (e) {
-        Swal.fire("Erro", "Não foi possível iniciar a SL.", "error");
-      }
+      Swal.fire("Erro", "Não foi possível iniciar a SL.", "error");
     }
   }
 
+  // === MODAL: Finalizar ===
   async function finish(sl) {
     if (sl.status !== "Em andamento") return;
     const result = await Swal.fire({
@@ -256,20 +254,17 @@ export default function Dashboard() {
       reverseButtons: true,
     });
     if (!result.isConfirmed) return;
-
-    const payload = { status: "Finalizada", closed_at: new Date().toISOString(), filial: filialSel };
-
+  
     try {
-      await api.patch(`/sl/${sl._id}/finish`, { force: true, filial: filialSel });
+      await api.patch(`/api/sl/${sl._id}/finish`);
       refresh();
-    } catch {
-      await api
-        .patch(`/sl/${sl._id}`, payload)
-        .then(refresh)
-        .catch(() => Swal.fire("Erro", "Não foi possível finalizar a SL.", "error"));
+    } catch (err) {
+      const msg = err?.response?.data?.error || "Erro ao finalizar SL.";
+      Swal.fire("Erro", msg, "error");
     }
   }
-
+  
+  // === MODAL: Editar (reutiliza o modal "Nova SL" com campos preenchidos)
   function abrirModalEditar(sl) {
     if (!sl || sl.status === "Finalizada") return;
     setEditandoSL(sl);
@@ -278,11 +273,11 @@ export default function Dashboard() {
       sl_number: sl.sl_number || "",
       priority: !!sl.priority,
       plate: sl.plate || "",
-      tipo_lavagem: sl.tipo_lavagem || "LAVAGEM SIMPLES",
-      observacao: sl.observacao || "",
+      tipo_lavagem: sl.tipo_lavagem || "LAVAGEM SIMPLES (Jato)",
     });
   }
 
+  // === MODAL: Excluir ===
   async function abrirModalExcluir(sl) {
     if (!sl || sl.status === "Finalizada") return;
     const result = await Swal.fire({
@@ -297,11 +292,11 @@ export default function Dashboard() {
     if (!result.isConfirmed) return;
 
     const attempts = [
-      () => api.delete(`/sl/${sl._id}`),
-      () => api.delete(`/sl/delete/${sl._id}`),
-      () => api.post(`/sl/${sl._id}/delete`),
-      () => api.delete(`/sl`, { params: { id: sl._id } }),
-      () => api.delete(`/sl`, { data: { id: sl._id } }),
+      () => api.delete(`/api/sl/${sl._id}`),
+      () => api.delete(`/api/sl/delete/${sl._id}`),
+      () => api.post(`/api/sl/${sl._id}/delete`),
+      () => api.delete(`/api/sl`, { params: { id: sl._id } }),
+      () => api.delete(`/api/sl`, { data: { id: sl._id } }),
     ];
 
     let ok = false;
@@ -330,74 +325,75 @@ export default function Dashboard() {
     }
   }
 
+  // Salvar Nova/Editar SL
   async function createNew(e) {
     e.preventDefault();
     const body = { ...newForm, filial: filialSel };
-    const plateUp = String(body.plate || "").toUpperCase();
-
+    body.plate = String(body.plate || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  
+    // 🔴 NÃO envie sl_number vazio para evitar "" no índice
+    if (!body.sl_number || String(body.sl_number).trim() === "") {
+      delete body.sl_number;
+    }
+  
     try {
       if (editandoSL) {
-        await api.patch(`/sl/${editandoSL._id}`, {
+        await api.patch(`/api/sl/${editandoSL._id}`, {
           priority: !!body.priority,
-          plate: plateUp,
+          plate: body.plate,
           tipo_lavagem: body.tipo_lavagem,
           observacao: body.observacao || "",
         });
         setEditandoSL(null);
       } else {
-        await api.post("/sl", {
-          ...body,
-          plate: plateUp,
-          observacao: body.observacao || "",
-        });
+        await api.post("/api/sl", body);
       }
       setShowNew(false);
-      setNewForm({
-        sl_number: "",
-        priority: false,
-        plate: "",
-        tipo_lavagem: "LAVAGEM SIMPLES",
-        observacao: "",
-      });
+      setNewForm({ sl_number: "", priority: false, plate: "", tipo_lavagem: "LAVAGEM SIMPLES (Jato)", observacao: "" });
       refresh();
-    } catch {
-      Swal.fire("Erro", "Erro ao salvar SL.", "error");
+    } catch (err) {
+      const msg = err?.response?.data?.error || "Erro ao salvar SL.";
+      Swal.fire("Erro", msg, "error");
     }
   }
+  
+  /* ===== EXPORTAÇÃO XLSX (view atual) ===== */
+  function exportar() {
+    // Ordena por Abertura crescente
+    const sorted = [...view].sort(
+      (a, b) => new Date(a.opened_at || 0) - new Date(b.opened_at || 0)
+    );
 
-  const view = useMemo(() => {
-    const term = (search || "").trim().toUpperCase();
-    const di = parseBRDate(dataIni);
-    const df = parseBRDate(dataFim);
-    const ini = di ? startOfDay(di) : null;
-    const fim = df ? endOfDay(df) : null;
+    // Monta linhas na ordem exigida
+    const rows = sorted.map((sl) => ({
+      SL: sl.sl_number || "-",
+      P: sl.priority ? "P" : "",
+      Placa: sl.plate || "",
+      "Tipo de Lavagem": sl.tipo_lavagem || "",
+      Abertura: sl.opened_at ? new Date(sl.opened_at).toLocaleString("pt-BR") : "",
+      Status: sl.status || "",
+      Finalização: sl.closed_at ? new Date(sl.closed_at).toLocaleString("pt-BR") : "",
+      TL: calcTL(sl.opened_at, sl.closed_at),
+    }));
 
-    return (list || []).filter((sl) => {
-      if (term) {
-        const plate = String(sl.plate || "").toUpperCase();
-        const sln = String(sl.sl_number || "").toUpperCase();
-        if (!plate.includes(term) && !sln.includes(term)) return false;
-      }
-      if (ini || fim) {
-        const ab = sl.opened_at ? new Date(sl.opened_at) : null;
-        if (!ab) return false;
-        if (ini && ab < ini) return false;
-        if (fim && ab > fim) return false;
-      }
-      return true;
+    const ws = XLSX.utils.json_to_sheet(rows, {
+      header: ["SL", "P", "Placa", "Tipo de Lavagem", "Abertura", "Status", "Finalização", "TL"],
     });
-  }, [list, search, dataIni, dataFim]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "SL");
 
-  const stats = useMemo(() => {
-    const s = { Aberta: 0, "Em andamento": 0, Finalizada: 0 };
-    for (const v of view) {
-      if (v.status === "Aberta") s.Aberta++;
-      else if (v.status === "Em andamento") s["Em andamento"]++;
-      else if (v.status === "Finalizada") s.Finalizada++;
-    }
-    return s;
-  }, [view]);
+    const filial = filialSel ? String(filialSel).toUpperCase() : "TODAS";
+    // datas do filtro no formato dd-mm-aaaa
+    const din = brToDash(dataIni);
+    const dfi = brToDash(dataFim);
+    const nome = `SL_${filial}_${din}_${dfi}.xlsx`;
 
+    XLSX.writeFile(wb, nome);
+  }
+
+  const isAdmin = hasAdminRole(user);
+
+  function onFiltrar() {}
   function onLimparFiltros() {
     setSearch("");
     const hoje = todayBR();
@@ -405,21 +401,58 @@ export default function Dashboard() {
     setDataFim(hoje);
   }
 
+  /* ===== CSS inline: hover + moldura do celular ===== */
   const hoverStyle = `
     .btn:hover { background-color:#c2fb4a!important; color:black!important; }
-    .phone-frame{ background-image:url('${import.meta.env.BASE_URL}phone.png'); background-repeat:no-repeat; background-position:center top; background-size:420px auto; min-height:640px; margin:20px; padding:20px; display:flex; justify-content:center; align-items:flex-start; }
-    .phone-content{ width:320px; margin-top:10px; margin-bottom:40px; padding:14px 12px; background:transparent; }
+
+    /* Moldura do celular como background único */
+    .phone-frame{
+      background-image:url('${import.meta.env.BASE_URL}phone.png');
+      background-repeat:no-repeat;
+      background-position:center top;
+      background-size:420px auto;
+      min-height:640px;
+      margin:20px;
+      padding:20px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+    /* Conteúdo do formulário posicionado dentro da “tela” da moldura */
+    .phone-content{
+      width:320px;
+      margin-top:15px;
+      margin-bottom:40px;
+      padding:20px 16px;
+      background:transparent;
+    }
     .phone-content h3{ text-align:center; margin-top:0; }
-    .phone-content .input,.phone-content select,.phone-content textarea { border: 1px solid #333 !important; }
-    .field{ margin-bottom:10px; }
-    .field.inline{ display:flex; align-items:center; gap:10px; }
-    .row-sl-prio{ display:flex; gap:12px; align-items:end; flex-wrap:nowrap; }
-    .row-sl-prio .col-sl{ flex:1 1 auto; min-width:0; }
-    .row-sl-prio .col-prio{ display:flex; align-items:center; gap:8px; white-space:nowrap; margin-bottom: 8px; }
-    .row-sl-prio .prio-box{ width:18px; height:18px; }
-    .w-8ch{ width: 8ch; } .w-9ch{ width: 9ch; } .w-12ch{ width: 12ch; } .w-26ch{ width: 26ch; } .mono{ font-family: monospace; }
+
+    /* Campos do modal com borda sólida */
+    .phone-content .input,
+    .phone-content select {
+      border: 1px solid #333 !important;
+    }
+
+    /* Checkbox com borda visível */
+    .phone-content input[type="checkbox"]{
+      width:18px; height:18px;
+      border:2px solid #333;
+      outline: 1px solid #333;
+    }
+
+    /* Linha com label + checkbox lado a lado */
+    .field.inline{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    /* Borda sólida nos inputs da barra superior (Buscar, Data inicial e final) */
+    .barra-filtros .input { border: 1px solid #333 !important; }
   `;
 
+  // Foco no campo SL quando o modal abrir
   useEffect(() => {
     if (showNew && slInputRef.current) {
       slInputRef.current.focus();
@@ -446,9 +479,9 @@ export default function Dashboard() {
       <div id="menu" className={`card ${menuOpen ? "" : "hide"}`}>
         <b>Menu</b>
         <div className="grid" style={{ gridTemplateColumns: "1fr 1fr" }}>
-          <button className="btn" disabled={!hasAdminRole(user)}>Cadastro de Filial</button>
-          <button className="btn" onClick={() => setShowHModal(true)} disabled={!hasAdminRole(user)}>Cadastro de Higienizador</button>
-          <button className="btn" disabled={!hasAdminRole(user)}>Relatório</button>
+          <button className="btn" disabled={!isAdmin}>Cadastro de Filial</button>
+          <button className="btn" onClick={() => setShowHModal(true)} disabled={!isAdmin}>Cadastro de Higienizador</button>
+          <button className="btn" disabled={!isAdmin}>Relatório</button>
           <button className="btn" onClick={logout}>Sair</button>
         </div>
       </div>
@@ -469,72 +502,109 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* CARDS */}
+      {/* CARDS (pela view) */}
       <div className="grid cards">
-        <div className="card stat"><div className="title">Aberta</div><div className="stat-number">{stats.Aberta}</div></div>
-        <div className="card stat"><div className="title">Em andamento</div><div className="stat-number">{stats["Em andamento"]}</div></div>
-        <div className="card stat"><div className="title">Finalizada</div><div className="stat-number">{stats.Finalizada}</div></div>
+        <div className="card stat"><div className="title">Aberta</div><div className="stat-number">{statsFromView.Aberta}</div></div>
+        <div className="card stat"><div className="title">Em andamento</div><div className="stat-number">{statsFromView["Em andamento"]}</div></div>
+        <div className="card stat"><div className="title">Finalizada</div><div className="stat-number">{statsFromView.Finalizada}</div></div>
       </div>
 
-      {/* BARRA FILTROS */}
-      <div className="card barra-filtros" style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "nowrap", overflowX: "auto", whiteSpace: "nowrap" }}>
+      {/* AÇÕES em linha */}
+      <div
+        className="card barra-filtros"
+        style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "nowrap", overflowX: "auto", whiteSpace: "nowrap" }}
+      >
         <button className="btn" onClick={() => { setEditandoSL(null); setShowNew(true); }}>Nova SL</button>
         <button className="btn" onClick={exportar}>Exportar</button>
 
-        <input className="input" placeholder="Buscar por placa ou SL" value={search}
-          onChange={(e) => setSearch(e.target.value)} maxLength={23}
-          style={{ width: "27ch", fontFamily: "monospace", border: "1px solid #333" }} title="Digite a Placa ou SL" />
+        <input
+          className="input"
+          placeholder="Buscar por placa ou SL"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          maxLength={23}
+          style={{ width: "27ch", fontFamily: "monospace" }}
+          title="Digite a Placa ou SL"
+        />
 
-        <input className="input" placeholder="dd/mm/aaaa" value={dataIni}
-          onChange={(e) => setDataIni(normalizeBR(e.target.value))}
-          title="Data inicial (dd/mm/aaaa)" style={{ width: 110, border: "1px solid #333" }} />
+        <input
+          className="input"
+          placeholder="dd/mm/aaaa"
+          value={dataIni}
+          onChange={(e) => setDataIni(e.target.value)}
+          title="Data inicial (dd/mm/aaaa)"
+          style={{ width: 80 }}
+        />
         <span>até</span>
-        <input className="input" placeholder="dd/mm/aaaa" value={dataFim}
-          onChange={(e) => setDataFim(normalizeBR(e.target.value))}
-          title="Data final (dd/mm/aaaa)" style={{ width: 110, border: "1px solid #333" }} />
+        <input
+          className="input"
+          placeholder="dd/mm/aaaa"
+          value={dataFim}
+          onChange={(e) => setDataFim(e.target.value)}
+          title="Data final (dd/mm/aaaa)"
+          style={{ width: 80 }}
+        />
 
-        <button className="btn" onClick={() => { /* filtragem já acontece pela 'view' */ }}>Filtrar</button>
+        <button className="btn" onClick={onFiltrar}>Filtrar</button>
         <button className="btn" onClick={onLimparFiltros}>Limpar Filtros</button>
       </div>
 
-      {/* MODAL NOVA/EDITAR SL */}
+      {/* MODAL NOVA/EDITAR SL (moldura única com background) */}
       {showNew && (
         <div className="card phone-frame">
           <div className="phone-content">
             <form onSubmit={createNew}>
               <h3>{editandoSL ? "Editar SL" : "Nova SL"}</h3>
 
-              <div className="row-sl-prio">
-                <div className="col-sl">
-                  <div className="field">
-                    <label htmlFor="slNumber">SL (opcional)</label>
-                    <input id="slNumber" ref={slInputRef} className="input w-12ch"
-                      value={newForm.sl_number}
-                      onChange={(e) => setNewForm({ ...newForm, sl_number: e.target.value.replace(/[^0-9]/g, "") })}
-                      maxLength={8} disabled={!!editandoSL}
-                      title={editandoSL ? "O número da SL não pode ser alterado" : "Opcional na criação"} />
-                  </div>
-                </div>
-                <div className="col-prio">
-                  <label htmlFor="priority">Prioridade</label>
-                  <input id="priority" type="checkbox" className="prio-box"
-                    checked={newForm.priority}
-                    onChange={(e) => setNewForm({ ...newForm, priority: e.target.checked })}
-                    aria-label="Prioridade" />
-                </div>
+              <div className="field">
+                <label htmlFor="slNumber">SL (opcional)</label>
+                <input
+                  id="slNumber"
+                  ref={slInputRef}
+                  className="input w-8ch"
+                  value={newForm.sl_number}
+                  onChange={(e) =>
+                    setNewForm({ ...newForm, sl_number: e.target.value.replace(/[^0-9]/g, "") })
+                  }
+                  maxLength={8}
+                  disabled={!!editandoSL}
+                  title={editandoSL ? "O número da SL não pode ser alterado" : "Opcional na criação"}
+                />
+              </div>
+
+              <div className="field inline">
+                <label htmlFor="priority">Prioridade</label>
+                <input
+                  id="priority"
+                  type="checkbox"
+                  checked={newForm.priority}
+                  onChange={(e) => setNewForm({ ...newForm, priority: e.target.checked })}
+                  aria-label="Prioridade"
+                />
               </div>
 
               <div className="field">
                 <label>Placa</label>
-                <input className="input placa" value={newForm.plate}
-                  onChange={(e) => setNewForm({ ...newForm, plate: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "") })}
-                  maxLength={7} />
+                <input
+                  className="input placa"
+                  value={newForm.plate}
+                  onChange={(e) =>
+                    setNewForm({
+                      ...newForm,
+                      plate: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""),
+                    })
+                  }
+                  maxLength={7}
+                />
               </div>
 
               <div className="field">
                 <label>Tipo de Lavagem</label>
-                <select className="input w-26ch" value={newForm.tipo_lavagem}
-                  onChange={(e) => setNewForm({ ...newForm, tipo_lavagem: e.target.value })}>
+                <select
+                  className="input w-26ch"
+                  value={newForm.tipo_lavagem}
+                  onChange={(e) => setNewForm({ ...newForm, tipo_lavagem: e.target.value })}
+                >
                   <option>LAVAGEM SIMPLES</option>
                   <option>LAVAGEM ESPECIAL</option>
                 </select>
@@ -567,13 +637,24 @@ export default function Dashboard() {
         <table className="table">
           <thead>
             <tr>
-              <th>SL</th><th></th><th>Placa</th><th>Tipo de Lavagem</th>
-              <th>Abertura</th><th>Status</th><th>Finalização</th><th>TL</th><th>Ações</th>
+              <th>SL</th>
+              <th></th> {/* P */}
+              <th>Placa</th>
+              <th>Tipo de Lavagem</th>
+              <th>Abertura</th>
+              <th>Status</th>
+              <th>Finalização</th>
+              <th>TL</th> {/* Tempo de Lavagem */}
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
             {view.length === 0 ? (
-              <tr><td colSpan={9} style={{ textAlign: "center", padding: 16 }}>Nenhum registro correspondente encontrado</td></tr>
+              <tr>
+                <td colSpan={9} style={{ textAlign: "center", padding: 16 }}>
+                  Nenhum registro correspondente encontrado
+                </td>
+              </tr>
             ) : (
               view.map((sl) => (
                 <tr key={sl._id}>
@@ -588,19 +669,43 @@ export default function Dashboard() {
                   <td className="acoes">
                     <div className="acoes-inner">
                       {sl.status === "Aberta" && (
-                        <img src={resolveIcon("play")} data-tried="base" onError={onIconErrorFactory("play")}
-                          alt="Iniciar" className="icon-acao" onClick={() => abrirModalIniciar(sl)} />
+                        <img
+                          src={resolveIcon("play")}
+                          data-tried="base"
+                          onError={onIconErrorFactory("play")}
+                          alt="Iniciar"
+                          className="icon-acao"
+                          onClick={() => abrirModalIniciar(sl)}
+                        />
                       )}
                       {sl.status === "Em andamento" && (
-                        <img src={resolveIcon("check")} data-tried="base" onError={onIconErrorFactory("check")}
-                          alt="Finalizar" className="icon-acao" onClick={() => finish(sl)} />
+                        <img
+                          src={resolveIcon("check")}
+                          data-tried="base"
+                          onError={onIconErrorFactory("check")}
+                          alt="Finalizar"
+                          className="icon-acao"
+                          onClick={() => finish(sl)}
+                        />
                       )}
                       {sl.status !== "Finalizada" && (
                         <>
-                          <img src={resolveIcon("pencil")} data-tried="base" onError={onIconErrorFactory("pencil")}
-                            alt="Editar" className="icon-acao" onClick={() => abrirModalEditar(sl)} />
-                          <img src={resolveIcon("trash")} data-tried="base" onError={onIconErrorFactory("trash")}
-                            alt="Excluir" className="icon-acao" onClick={() => abrirModalExcluir(sl)} />
+                          <img
+                            src={resolveIcon("pencil")}
+                            data-tried="base"
+                            onError={onIconErrorFactory("pencil")}
+                            alt="Editar"
+                            className="icon-acao"
+                            onClick={() => abrirModalEditar(sl)}
+                          />
+                          <img
+                            src={resolveIcon("trash")}
+                            data-tried="base"
+                            onError={onIconErrorFactory("trash")}
+                            alt="Excluir"
+                            className="icon-acao"
+                            onClick={() => abrirModalExcluir(sl)}
+                          />
                         </>
                       )}
                     </div>

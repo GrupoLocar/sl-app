@@ -47,7 +47,6 @@ font-size:24px; cursor:pointer; background:none; border:none
 .card.stat .stat-number{font-size:28px;font-weight:800;line-height:1}
 
 /* === Inputs com largura por “ch” === */
-/* .w-7ch{width:20ch} Placa (7) - margem de folga p/ bordas/padding */
 .w-8ch{width:12ch} /* SL opcional (até 8 dígitos) */
 .w-26ch{width:30ch} /* "LAVAGEM SIMPLES (Jato)" cabe sem quebrar */
 .field{margin:6px 0}
