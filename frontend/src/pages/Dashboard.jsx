@@ -7,6 +7,18 @@ import Swal from "sweetalert2";
 import HigienizadorModal from "../components/HigienizadorModal";
 import * as XLSX from "xlsx";
 
+/* ===== Helpers de data ===== */
+function isSameDay(a, b) {
+  if (!a || !b) return false;
+  const da = new Date(a);
+  const db = new Date(b);
+  return (
+    da.getFullYear() === db.getFullYear() &&
+    da.getMonth() === db.getMonth() &&
+    da.getDate() === db.getDate()
+  );
+}
+
 /* ===== Helpers para robustez de usuário/role ===== */
 function coalesceUserShape(data) {
   return data?.user || data?.currentUser || data?.me || data || null;
@@ -86,6 +98,18 @@ function brToDash(str) {
   return `${m[1]}-${m[2]}-${m[3]}`;
 }
 
+/* ===== Máscara de data dd/mm/aaaa ===== */
+function maskDateBR(input) {
+  const digits = String(input || "").replace(/\D/g, "").slice(0, 8);
+  const d = digits.slice(0, 2);
+  const m = digits.slice(2, 4);
+  const y = digits.slice(4, 8);
+  let out = d;
+  if (m) out += "/" + m;
+  if (y) out += "/" + y;
+  return out;
+}
+
 /* ===== Tempo de Lavagem (TL) ===== */
 function formatTL(ms) {
   if (ms == null || isNaN(ms) || ms < 0) return "-";
@@ -112,17 +136,20 @@ export default function Dashboard() {
   const [stats, setStats] = useState({ Aberta: 0, "Em andamento": 0, Finalizada: 0 });
   const [list, setList] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const anchorFormRef = useRef(null);
 
   // MODAIS / FORM NOVA SL
   const [showNew, setShowNew] = useState(false);
   const [showHModal, setShowHModal] = useState(false);
   const [editandoSL, setEditandoSL] = useState(null);
-  const [newForm, setNewForm] = useState({
+  const defaultNewForm = {
     sl_number: "",
     priority: false,
     plate: "",
-    tipo_lavagem: "LAVAGEM SIMPLES (Jato)",
-  });
+    tipo_lavagem: "LAVAGEM SIMPLES",
+    observacao: "",
+  };
+  const [newForm, setNewForm] = useState(defaultNewForm);
 
   // CONTROLES DE FILTRO
   const [search, setSearch] = useState("");
@@ -273,7 +300,8 @@ export default function Dashboard() {
       sl_number: sl.sl_number || "",
       priority: !!sl.priority,
       plate: sl.plate || "",
-      tipo_lavagem: sl.tipo_lavagem || "LAVAGEM SIMPLES (Jato)",
+      tipo_lavagem: sl.tipo_lavagem || "LAVAGEM SIMPLES",
+      observacao: sl.observacao || "",
     });
   }
 
@@ -325,46 +353,93 @@ export default function Dashboard() {
     }
   }
 
-  // Salvar Nova/Editar SL
-  async function createNew(e) {
-    e.preventDefault();
-    const body = { ...newForm, filial: filialSel };
-    body.plate = String(body.plate || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
-  
-    // 🔴 NÃO envie sl_number vazio para evitar "" no índice
+// ===== Salvar Nova/Editar SL =====
+async function createNew(e) {
+  e.preventDefault();
+  const body = { ...newForm, filial: filialSel };
+
+  // Normaliza placa e valida obrigatoriedade
+  body.plate = String(body.plate || "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "");
+  if (!body.plate) {
+    Swal.fire("Erro", "A Placa é obrigatória.", "error");
+    return;
+  }
+
+  // SL opcional:
+  // - Criação: se vazio, forçamos "-" para evitar qualquer auto-geração randômica no backend.
+  // - Edição: nunca alteramos o sl_number.
+  if (!editandoSL) {
     if (!body.sl_number || String(body.sl_number).trim() === "") {
-      delete body.sl_number;
+      body.sl_number = "-";
+    } else {
+      body.sl_number = String(body.sl_number).replace(/[^0-9]/g, "");
     }
-  
-    try {
-      if (editandoSL) {
-        await api.patch(`/api/sl/${editandoSL._id}`, {
-          priority: !!body.priority,
-          plate: body.plate,
-          tipo_lavagem: body.tipo_lavagem,
-          observacao: body.observacao || "",
-        });
-        setEditandoSL(null);
-      } else {
-        await api.post("/api/sl", body);
-      }
-      setShowNew(false);
-      setNewForm({ sl_number: "", priority: false, plate: "", tipo_lavagem: "LAVAGEM SIMPLES (Jato)", observacao: "" });
-      refresh();
-    } catch (err) {
-      const msg = err?.response?.data?.error || "Erro ao salvar SL.";
-      Swal.fire("Erro", msg, "error");
+  } else {
+    // Em edição, não tocar no número
+    delete body.sl_number;
+  }
+
+  // === NOVA REGRA: impedir mesma PLACA no MESMO DIA (somente na criação) ===
+  if (!editandoSL) {
+    // "Hoje" é a data de lançamento (abertura) dessa nova SL
+    const agora = new Date();
+
+    // Verifica na lista atual (já carregada para a filial selecionada)
+    const existeMesmoDia = (list || []).some((sl) => {
+      // compara placa normalizada
+      const placaIgual =
+        String(sl.plate || "").toUpperCase().replace(/[^A-Z0-9]/g, "") ===
+        body.plate;
+
+      // compara apenas o DIA (YYYY-MM-DD), não a hora
+      const mesmaData = isSameDay(sl.opened_at, agora);
+
+      return placaIgual && mesmaData;
+    });
+
+    if (existeMesmoDia) {
+      await Swal.fire("Atenção", "Esta placa já foi registrada para esta data.", "warning");
+      return; // não deixa salvar
     }
   }
-  
+
+  try {
+    if (editandoSL) {
+      await api.patch(`/api/sl/${editandoSL._id}`, {
+        priority: !!body.priority,
+        plate: body.plate,
+        tipo_lavagem: body.tipo_lavagem,
+        observacao: body.observacao || "",
+      });
+      setEditandoSL(null);
+    } else {
+      await api.post("/api/sl", body);
+    }
+    setShowNew(false);
+    setNewForm(defaultNewForm);
+    refresh();
+    setTimeout(() => anchorFormRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+  } catch (err) {
+    const raw =
+      err?.response?.data?.error ||
+      err?.response?.data?.message ||
+      err?.message ||
+      "Erro ao salvar SL.";
+    const friendly = String(raw).toLowerCase().includes("invalid_plate")
+      ? "A Placa é obrigatória."
+      : raw;
+    Swal.fire("Erro", friendly, "error");
+  }
+}
+
   /* ===== EXPORTAÇÃO XLSX (view atual) ===== */
   function exportar() {
-    // Ordena por Abertura crescente
     const sorted = [...view].sort(
       (a, b) => new Date(a.opened_at || 0) - new Date(b.opened_at || 0)
     );
 
-    // Monta linhas na ordem exigida
     const rows = sorted.map((sl) => ({
       SL: sl.sl_number || "-",
       P: sl.priority ? "P" : "",
@@ -383,7 +458,6 @@ export default function Dashboard() {
     XLSX.utils.book_append_sheet(wb, ws, "SL");
 
     const filial = filialSel ? String(filialSel).toUpperCase() : "TODAS";
-    // datas do filtro no formato dd-mm-aaaa
     const din = brToDash(dataIni);
     const dfi = brToDash(dataFim);
     const nome = `SL_${filial}_${din}_${dfi}.xlsx`;
@@ -405,7 +479,6 @@ export default function Dashboard() {
   const hoverStyle = `
     .btn:hover { background-color:#c2fb4a!important; color:black!important; }
 
-    /* Moldura do celular como background único */
     .phone-frame{
       background-image:url('${import.meta.env.BASE_URL}phone.png');
       background-repeat:no-repeat;
@@ -418,7 +491,6 @@ export default function Dashboard() {
       justify-content:center;
       align-items:flex-start;
     }
-    /* Conteúdo do formulário posicionado dentro da “tela” da moldura */
     .phone-content{
       width:320px;
       margin-top:15px;
@@ -428,31 +500,26 @@ export default function Dashboard() {
     }
     .phone-content h3{ text-align:center; margin-top:0; }
 
-    /* Campos do modal com borda sólida */
     .phone-content .input,
     .phone-content select {
       border: 1px solid #333 !important;
     }
 
-    /* Checkbox com borda visível */
     .phone-content input[type="checkbox"]{
       width:18px; height:18px;
       border:2px solid #333;
       outline: 1px solid #333;
     }
 
-    /* Linha com label + checkbox lado a lado */
     .field.inline{
       display:flex;
       align-items:center;
       gap:10px;
     }
 
-    /* Borda sólida nos inputs da barra superior (Buscar, Data inicial e final) */
     .barra-filtros .input { border: 1px solid #333 !important; }
   `;
 
-  // Foco no campo SL quando o modal abrir
   useEffect(() => {
     if (showNew && slInputRef.current) {
       slInputRef.current.focus();
@@ -460,8 +527,12 @@ export default function Dashboard() {
     }
   }, [showNew]);
 
+  const handleDataIniChange = (e) => setDataIni(maskDateBR(e.target.value));
+  const handleDataFimChange = (e) => setDataFim(maskDateBR(e.target.value));
+
   return (
     <div className="container">
+      <div ref={anchorFormRef} />
       <style>{hoverStyle}</style>
 
       {/* TOPO */}
@@ -514,7 +585,16 @@ export default function Dashboard() {
         className="card barra-filtros"
         style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "nowrap", overflowX: "auto", whiteSpace: "nowrap" }}
       >
-        <button className="btn" onClick={() => { setEditandoSL(null); setShowNew(true); }}>Nova SL</button>
+        <button
+          className="btn"
+          onClick={() => {
+            setEditandoSL(null);
+            setNewForm(defaultNewForm);
+            setShowNew(true);
+          }}
+        >
+          Nova SL
+        </button>
         <button className="btn" onClick={exportar}>Exportar</button>
 
         <input
@@ -531,30 +611,45 @@ export default function Dashboard() {
           className="input"
           placeholder="dd/mm/aaaa"
           value={dataIni}
-          onChange={(e) => setDataIni(e.target.value)}
+          onChange={handleDataIniChange}
           title="Data inicial (dd/mm/aaaa)"
-          style={{ width: 80 }}
+          style={{ width: 90 }}
         />
         <span>até</span>
         <input
           className="input"
           placeholder="dd/mm/aaaa"
           value={dataFim}
-          onChange={(e) => setDataFim(e.target.value)}
+          onChange={handleDataFimChange}
           title="Data final (dd/mm/aaaa)"
-          style={{ width: 80 }}
+          style={{ width: 90 }}
         />
 
-        <button className="btn" onClick={onFiltrar}>Filtrar</button>
+        <button className="btn" onClick={() => { /* filtro já é reativo */ }}>Filtrar</button>
         <button className="btn" onClick={onLimparFiltros}>Limpar Filtros</button>
       </div>
 
-      {/* MODAL NOVA/EDITAR SL (moldura única com background) */}
+      {/* MODAL NOVA/EDITAR SL */}
       {showNew && (
         <div className="card phone-frame">
           <div className="phone-content">
             <form onSubmit={createNew}>
               <h3>{editandoSL ? "Editar SL" : "Nova SL"}</h3>
+
+              <div className="field">
+                <label>Placa</label>
+                <input
+                  className="input placa"
+                  value={newForm.plate}
+                  onChange={(e) =>
+                    setNewForm({
+                      ...newForm,
+                      plate: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""),
+                    })
+                  }
+                  maxLength={7}
+                />
+              </div>
 
               <div className="field">
                 <label htmlFor="slNumber">SL (opcional)</label>
@@ -584,21 +679,6 @@ export default function Dashboard() {
               </div>
 
               <div className="field">
-                <label>Placa</label>
-                <input
-                  className="input placa"
-                  value={newForm.plate}
-                  onChange={(e) =>
-                    setNewForm({
-                      ...newForm,
-                      plate: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""),
-                    })
-                  }
-                  maxLength={7}
-                />
-              </div>
-
-              <div className="field">
                 <label>Tipo de Lavagem</label>
                 <select
                   className="input w-26ch"
@@ -612,10 +692,15 @@ export default function Dashboard() {
 
               <div className="field">
                 <label>Observacao</label>
-                <textarea className="input" rows={3} maxLength={300}
+                <textarea
+                  className="input"
+                  rows={3}
+                  maxLength={300}
                   value={newForm.observacao}
                   onChange={(e) => setNewForm({ ...newForm, observacao: e.target.value })}
-                  placeholder="Digite observacoes (opcional)" style={{ width: "100%", resize: "vertical" }} />
+                  placeholder="Digite observacoes (opcional)"
+                  style={{ width: "100%", resize: "vertical" }}
+                />
               </div>
 
               <div className="field">
@@ -638,13 +723,13 @@ export default function Dashboard() {
           <thead>
             <tr>
               <th>SL</th>
-              <th></th> {/* P */}
+              <th></th>
               <th>Placa</th>
               <th>Tipo de Lavagem</th>
               <th>Abertura</th>
               <th>Status</th>
               <th>Finalização</th>
-              <th>TL</th> {/* Tempo de Lavagem */}
+              <th>TL</th>
               <th>Ações</th>
             </tr>
           </thead>

@@ -9,8 +9,7 @@ MERN (MongoDB, Express, React, Node) demo, pronto para hospedar **frontend no Gi
 ## Passos rápidos
 
 1. **Backend** (Node 18+):
-   - Crie `.env` baseado em `.env.example`.
-   - `cd backend && npm i && npm run dev` (dev) ou `npm start` (prod).
+     - `cd backend && npm i && npm run dev` (dev) ou `npm start` (prod).
    - Rode `npm run seed` para criar usuário Admin e 30 SLs de teste.
 
 2. **Frontend**:

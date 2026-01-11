@@ -1,22 +1,100 @@
-# Ignorar node_modules
+# =========================================
+# DEPENDÊNCIAS / BUILD
+# =========================================
 node_modules/
+.pnp
+.pnp.js
+dist/
+build/
+.cache/
+.temp/
+.vercel
+.vercel/
 
-# Ignorar arquivos do sistema
-.DS_Store
-Thumbs.db
+# Data
+public/uploads/
+SincronizarBancosDeDados.txt
 
-# Ignorar arquivos de log
-# Logs, caches
+# Excel
+*.xlsx
+
+# Cobertura de testes
+coverage/
+
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-*.log
+
+# =========================================
+# AMBIENTES
+# =========================================
+*.env
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+server/.env
+server/.env*
+server/.env.*
+
+# =========================================
+# SISTEMA OPERACIONAL / EDITOR
+# =========================================
+Thumbs.db
+.DS_Store
+*.swp
+*.swo
+.idea/
 .vscode/
 
-# Ignorar arquivos de configuração local
-.env
+# =========================================
+# export/excel
+# =========================================
+data/export/
+data/excel/
 
-#Ignorar arquivos dist
-dist/
+# Dentro de C:\Locar\backend\data\
+backend/data/
+backend/data/export/
 
+# Scripts
+scripts/
+backend/scripts/
+
+# =========================================
+# BINÁRIOS / COMPILADOS / CACHE
+# =========================================
+*.exe
+*.dll
+*.pdb
+*.so
+*.dylib
+*.class
+*.o
+*.obj
+
+# Python cache
+__pycache__/
+.py
+*.py
+*.pyc
+*.pyo
+*.pyd
+*.ps1
+*.pm2
+
+# Arquivos de Lote
+.bat
+*.bat
+
+# Compactados temporários
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
